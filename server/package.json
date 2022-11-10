@@ -2,9 +2,16 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon ./bin/www/server.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.2.0",
+    "fastify": "^4.9.2",
+    "nodemon": "^2.0.20",
+    "sucrase": "^3.28.0",
+    "zod": "^3.19.1"
   },
   "keywords": [],
   "author": "Guilherme Joviniano De Sousa",
