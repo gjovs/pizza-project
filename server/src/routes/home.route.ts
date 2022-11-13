@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { HomeController } from "../controllers";
-import { TypeReplyGeneric } from "../interfaces";
+import { TypeReplyGeneric } from "../types";
 
 export default async function homeRoutes(server: FastifyInstance) {
   server.get(
@@ -15,7 +15,7 @@ export default async function homeRoutes(server: FastifyInstance) {
             }
           }
         },
-        response: TypeReplyGeneric,
+        response: TypeReplyGeneric
       },
     },
     HomeController.index

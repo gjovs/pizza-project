@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 
 class HomeController {
   async index(req: FastifyRequest, rep: FastifyReply) {
@@ -13,14 +13,21 @@ class HomeController {
       return rep.status(200).send({
         code: 200,
         error: false,
-        payload: [`Hello ${name}`],
+        payload: [`Hello ${name} `],
       });
-    } catch ({ message }) {
-      const error = JSON.parse(message as string)[0].message;
+    } catch (err) {
+      if (err instanceof ZodError) {
+        return rep.status(400).send({
+          code: 400,
+          error: true,
+          payload: err.issues
+        })
+      }
+      
       return rep.status(400).send({
         code: 400,
         error: true,
-        payload: error,
+        message: JSON.parse(err as string)[0],
       });
     }
   }

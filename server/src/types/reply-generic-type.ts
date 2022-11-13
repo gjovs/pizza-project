@@ -20,8 +20,8 @@ export default {
       code: {
         type: "number",
       },
-      message: {
-        type: "string",
+      payload: {
+        type: "array",
       },
       error: {
         type: "boolean",
