@@ -1,4 +1,4 @@
-import IReplyGeneric from "./reply-generic-interface";
+import TypeReplyGeneric from "./reply-generic-interface";
 
 
-export { IReplyGeneric }
+export { TypeReplyGeneric }
