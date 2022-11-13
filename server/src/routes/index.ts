@@ -1,3 +1,3 @@
-import homeRoutes from "./home";
+import homeRoutes from "./home.route";
 
-export { homeRoutes }
+export { homeRoutes };
