@@ -30,10 +30,7 @@ export default class Server {
     this.server.register(homeRoutes, { prefix: "/" });
   }
 
-  static get instance(): Server {
-    if (Server._instance === null) {
-      Server._instance = new Server();
-    }
-    return Server._instance;
+  static get Instance(): Server {
+    return this._instance || (this._instance = new this());
   }
 }

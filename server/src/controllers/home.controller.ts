@@ -1,5 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import zod from "zod";
+import { z } from "zod";
+
+import { IReplyGeneric } from "../interfaces";
 
 class HomeController {
   async index(
@@ -8,15 +10,30 @@ class HomeController {
         name: string;
       };
     }>,
-    rep: FastifyReply<{
-      message: string;
-    }>
+    rep: FastifyReply<IReplyGeneric>
   ) {
-    const { name } = req.query;
-
-    return rep.status(200).send({
-      message: `Hello ${name}`,
+    const createQueryParams = z.object({
+      name: z.string().min(1),
     });
+
+    console.log(req.query);
+
+    try {
+      const { name } = createQueryParams.parse(req.query);
+
+      return rep.status(200).send({
+        code: 200,
+        error: false,
+        message: [`Hello ${name}`],
+      });
+    } catch ({ message }) {
+      const error = JSON.parse((message as string))[0].message;
+      return rep.status(400).send({
+        code: 400,
+        error: true,
+        message: error,
+      });
+    }
   }
 }
 
