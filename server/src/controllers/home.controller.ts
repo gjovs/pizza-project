@@ -17,13 +17,15 @@ class HomeController {
       });
     } catch (err) {
       if (err instanceof ZodError) {
+        const { code, message, path } = err.issues[0];
+
         return rep.status(400).send({
           code: 400,
           error: true,
-          payload: err.issues
-        })
+          payload: [{ code, message, path }],
+        });
       }
-      
+
       return rep.status(400).send({
         code: 400,
         error: true,
