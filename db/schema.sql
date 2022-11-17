@@ -143,3 +143,12 @@ CREATE TABLE
         CONSTRAINT FK_product_sale_off foreign key (product_id) references tbl_product(id),
         unique index(id)
     );
+
+CREATE TABLE
+    tbl_like_product (
+        id int not null primary key auto_increment,
+        likes int,
+        product_id int,
+        CONSTRAINT FK_product_sale_off foreign key (product_id) references tbl_product(id),
+        unique index(id)
+    );
