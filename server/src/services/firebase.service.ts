@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-import IFile from "../interface/IFile";
+import IFile from "../interfaces/IFile";
 import options from "../configs/firebase-key.json";
 
 class FirebaseService {
