@@ -134,3 +134,12 @@ CREATE TABLE
         content TEXT not null,
         unique index(id)
     );
+
+CREATE TABLE
+    tbl_sale_off (
+        id int not null primary key auto_increment,
+        off_value DECIMAL(10, 2),
+        product_id int,
+        CONSTRAINT FK_product_sale_off foreign key (product_id) references tbl_product(id),
+        unique index(id)
+    );
