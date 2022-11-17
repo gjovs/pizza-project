@@ -1,5 +1,7 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { DoneFuncWithErrOrRes, FastifyReply, FastifyRequest } from "fastify";
 import { z, ZodError } from "zod";
+import IMulterRequest from "../interface/multer.interface";
+import { FirebaseService } from "../services";
 
 class HomeController {
   async index(req: FastifyRequest, rep: FastifyReply) {
@@ -20,16 +22,33 @@ class HomeController {
         return rep.status(400).send({
           code: 400,
           error: true,
-          payload: err.issues
-        })
+          payload: err.issues,
+        });
       }
-      
+
       return rep.status(400).send({
         code: 400,
         error: true,
         message: JSON.parse(err as string)[0],
       });
     }
+  }
+
+  async uploadPicture(req: FastifyRequest, rep: FastifyReply) {
+    if (!(req as IMulterRequest).file) {
+      return rep.status(400).send({
+        code: 400,
+        error: true,
+        message: ["Required Field *avatar picture*"],
+      });
+    }
+
+    const image = (req as IMulterRequest).file;
+
+    await FirebaseService.uploadImage(image);
+    
+
+    return {  };
   }
 }
 

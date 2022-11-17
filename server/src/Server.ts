@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import multer from "fastify-multer";
 
 import { FastifyInstance } from "fastify";
 
@@ -16,11 +17,11 @@ export default class Server {
     });
 
     this.middlewares();
-
     this.routes();
   }
 
   private async middlewares() {
+    this.server.register(multer.contentParser);
     await this.server.register(cors, {
       origin: true,
     });
