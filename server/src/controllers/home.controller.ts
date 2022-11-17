@@ -19,10 +19,16 @@ class HomeController {
       });
     } catch (err) {
       if (err instanceof ZodError) {
+        const { code, message, path } = err.issues[0];
+
         return rep.status(400).send({
           code: 400,
           error: true,
+<<<<<<< HEAD
           payload: err.issues,
+=======
+          payload: [{ code, message, path }],
+>>>>>>> f9d1be96f92f8ef296e37be1ccd9af98502c9ed9
         });
       }
 
