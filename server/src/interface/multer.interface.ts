@@ -1,5 +1,5 @@
-import { FastifyRequest } from "fastify";
+import IFile from "./file.interface";
 
-export default interface IMulterRequest extends FastifyRequest {
-  file: any;
+export default interface IMulterRequest extends Request {
+  file: IFile;
 }

@@ -1,3 +1,3 @@
-import HomeController from "./home.controller";
+import PhotoController from "./photo.controller";
 
-export { HomeController }
+export { PhotoController }

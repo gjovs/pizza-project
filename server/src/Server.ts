@@ -1,34 +1,28 @@
-import Fastify from "fastify";
-import cors from "@fastify/cors";
-import multer from "fastify-multer";
+import cors from "cors";
 
-import { FastifyInstance } from "fastify";
+import express, { Express } from "express";
 
 import { homeRoutes } from "./routes";
 
 export default class Server {
   private static _instance: Server | null;
 
-  declare server: FastifyInstance;
+  declare server: Express;
 
   private constructor() {
-    this.server = Fastify({
-      logger: true,
-    });
+    this.server = express();
 
     this.middlewares();
     this.routes();
   }
 
-  private async middlewares() {
-    this.server.register(multer.contentParser);
-    await this.server.register(cors, {
-      origin: true,
-    });
+  private middlewares() {
+    this.server.use(express.json());
+    this.server.use(cors());
   }
 
   private routes() {
-    this.server.register(homeRoutes, { prefix: "/" });
+    this.server.use("/", homeRoutes);
   }
 
   static get Instance(): Server {
