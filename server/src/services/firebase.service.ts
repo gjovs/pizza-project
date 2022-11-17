@@ -46,8 +46,6 @@ class FirebaseService {
       await file.makePublic();
     });
 
-    console.log(imagem);
-
     stream.end(imagem.buffer);
 
     return `https://storage.googleapis.com/senai-pizzaria.appspot.com/${fileName}`;
