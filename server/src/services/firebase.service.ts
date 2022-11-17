@@ -1,9 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import { initializeApp } from "firebase/app";
 import admin from "firebase-admin";
-import IMulterRequest from "../interface/multer.interface";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import IFile from "../interface/file.interface";
+import IFile from "../interface/IFile";
 
 const options = {
   type: "service_account",

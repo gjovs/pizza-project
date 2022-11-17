@@ -6,7 +6,7 @@ import { uploadPhotoMiddleware } from "../middlewares";
 const router: Router = Router();
 
 router.post(
-  "/photo",
+  '',
   upload.single("avatar"),
   uploadPhotoMiddleware,
   PhotoController.store

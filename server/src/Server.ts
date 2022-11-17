@@ -2,7 +2,7 @@ import cors from "cors";
 
 import express, { Express } from "express";
 
-import { homeRoutes } from "./routes";
+import { pictureRoutes } from "./routes";
 
 export default class Server {
   private static _instance: Server | null;
@@ -22,10 +22,11 @@ export default class Server {
   }
 
   private routes() {
-    this.server.use("/", homeRoutes);
+    this.server.use("/photo", pictureRoutes);
   }
 
   static get Instance(): Server {
     return this._instance || (this._instance = new this());
   }
 }
+
