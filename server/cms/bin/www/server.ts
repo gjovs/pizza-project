@@ -4,4 +4,8 @@ const port = 3333;
 
 const server = Server.Instance.server;
 
-server.listen({ port })
+try {
+    server.listen({ port })
+} catch(err) {
+    console.log(err);
+}

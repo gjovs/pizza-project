@@ -1,3 +1,3 @@
-import pictureRoutes from "./picture.routes";
+import userRoutes from "./user/user.routes";
 
-export { pictureRoutes }
+export { userRoutes }

@@ -1,9 +1,9 @@
 import cors from "@fastify/cors";
 
 import Fastify, { FastifyInstance } from "fastify";
-import multer from "fastify-multer";
+import Multer from "fastify-multer";
 
-import { pictureRoutes } from "./routes";
+import { userRoutes } from "./routes";
 
 export default class Server {
   private static _instance: Server | null;
@@ -20,12 +20,12 @@ export default class Server {
   }
 
   private async middlewares() {
+    this.server.register(Multer.contentParser);
     await this.server.register(cors, { origin: true });
-    this.server.register(multer.contentParser);
   }
 
   private routes() {
-    this.server.register(pictureRoutes, { prefix: "/photo" });
+    this.server.register(userRoutes, { prefix: "/user" });
   }
 
   static get Instance(): Server {
