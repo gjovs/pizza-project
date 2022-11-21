@@ -1,15 +1,7 @@
-import { Router } from "express";
-import upload from "../configs/multer";
-import { PhotoController } from "../controllers";
-import { uploadPhotoMiddleware } from "../middlewares";
+import { FastifyInstance } from "fastify";
 
-const router: Router = Router();
-
-router.post(
-  '',
-  upload.single("avatar"),
-  uploadPhotoMiddleware,
-  PhotoController.store
-);
-
-export default router;
+export default async function pictureRoutes(server: FastifyInstance) {
+  server.post("", { onRequest: [] }, (req, rep) => {
+    
+  });
+}

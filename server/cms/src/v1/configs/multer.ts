@@ -1,4 +1,4 @@
-import multer from "multer";
+import multer from "fastify-multer";
 
 const opts = {
   fileFilter: (req, file, cb) => {
