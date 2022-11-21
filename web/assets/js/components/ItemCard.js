@@ -21,6 +21,12 @@ class ItemCard extends HTMLElement {
     img.classList.add('item-card__img');
     img.setAttribute('src', this.imageURL);
 
+    const content = document.createElement('div');
+    content.classList.add('item-card__text-content');
+
+    const infoDiv = document.createElement('div');
+    infoDiv.classList.add('item-card__info');
+
     const title = document.createElement('h3');
     title.classList.add('item-card__title');
     title.textContent = this.title;
@@ -29,37 +35,107 @@ class ItemCard extends HTMLElement {
     ingredients.classList.add('item-card__ingredients');
     ingredients.textContent = this.ingredients;
 
-    const price = document.createElement('span');
+    const price = document.createElement('div');
     price.classList.add('item-card__price');
-    price.textContent = this.price;
 
-    card.appendChild(img);
-    card.appendChild(title);
-    card.appendChild(ingredients)
-    card.appendChild(price)
+    const cents = document.createElement('span');
+
+    price.textContent = `R$${this.price}`;
+
+    content.appendChild(title);
+    content.appendChild(ingredients);
+
+    infoDiv.appendChild(img);
+    infoDiv.appendChild(content);
+
+    card.appendChild(infoDiv);
+    card.appendChild(price);
 
     return card;
+  }
+
+  static get observedAttributes() {
+    return ['title', 'ingredients', 'price'];
+  }
+
+  attributeChangedCallback(nameAtr, oldValue, newValue) {
+    // this.nameAtr = newValue;
+
+    if (nameAtr === 'title') {
+      this.title = newValue;
+    } else if (nameAtr === 'ingredients') {
+      this.ingredients = newValue;
+    } else if (nameAtr === 'price'){
+      this.price = newValue;
+    }
   }
 
   styles() {
     const styles = document.createElement('style');
     styles.textContent = `
       .item-card {
+        position: relative;
         display: flex;
         flex-direction: column;
-        // justify-content: center;
         align-items: center;
+        justify-content: space-between;
         padding: 10px 20px;
-        max-width: 300px;
+        max-width: 250px;
         min-height: 300px;
+        color: white;
         background-color: #3A3A3C;
+        text-align: left;
         border-radius: 12px;
       }
 
       .item-card__img {
         height: 130px;
-        width : 230px;
+        width : 100%;
+        background-size: cover;
+        object-fit: cover;
+        background-position: center;
         border-radius: 12px;
+      }
+
+      .item-card__info {
+        width: 100%;
+      }
+
+      .item-card__text-content {
+        display: flex;
+        justify-self: top;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .item-card__title {
+        margin-bottom: 2px;
+        margin-top: 8px;
+        text-transform: capitalize;
+        gap: 0px
+        font-size: 1.5rem;
+        align-self: flex-start;
+      } 
+
+      .item-card__ingredients {
+        color: #AEAEB0;
+        align-self: flex-start;
+        font-size: 1rem;
+      }
+
+      .item-card__price {
+        width: 100%;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #F9C739;
+        border-radius: 50px;
+
+        font-size: 2rem;
+        font-weight: 600;
+        color: #000000;
       }
     `;
 
