@@ -1,10 +1,16 @@
 import admin from "firebase-admin";
-import IFile from "../interfaces/IFile";
 import options from "../configs/firebase-key.json";
+
+interface IFile {
+  filename: string,
+  mimetype: string,
+  _buf: Buffer
+}
 
 class FirebaseService {
   constructor(
     private app = admin.initializeApp({
+      // @ts-ignore
       credential: admin.credential.cert(options),
       storageBucket: "senai-pizzaria.appspot.com",
     })
@@ -15,7 +21,7 @@ class FirebaseService {
 
     const bucket = admin.storage().bucket();
 
-    const fileName = Date.now() + "." + imagem.originalname.split(".").pop();
+    const fileName = Date.now() + "." + imagem.filename.split(".").pop();
 
     const file = bucket.file(fileName);
 
@@ -31,7 +37,7 @@ class FirebaseService {
       await file.makePublic();
     });
 
-    stream.end(imagem.buffer);
+    stream.end(imagem._buf);
 
     return `https://storage.googleapis.com/senai-pizzaria.appspot.com/${fileName}`;
   }

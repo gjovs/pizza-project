@@ -13,17 +13,14 @@ const User = {
 };
 
 const getUserOptions = {
-  //   body: {
-  //     type: "array",
-  //     items: {
-  //       type: "object",
-  //       properties: {
-  //         name: { type: "string" },
-  //       },
-  //     },
-  //   },
-  consumes: ["multipart/form-data"],
-
+  body: {
+    type: "object",
+    required:['nome','avatar'],
+    properties: {
+      avatar: { type: "object" },
+      nome: { type: "object" },
+    },
+  },
   response: {
     200: {
       type: "array",

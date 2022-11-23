@@ -1,9 +1,10 @@
 import cors from "@fastify/cors";
 
 import Fastify, { FastifyInstance } from "fastify";
-import Multer from "fastify-multer";
+import multipart from "@fastify/multipart";
 
 import { userRoutes } from "./routes";
+import pizzaRoutes from "./routes/pizza/pizza.routes";
 
 export default class Server {
   private static _instance: Server | null;
@@ -20,12 +21,13 @@ export default class Server {
   }
 
   private async middlewares() {
-    this.server.register(Multer.contentParser);
+    this.server.register(multipart, { attachFieldsToBody: true });
     await this.server.register(cors, { origin: true });
   }
 
   private routes() {
     this.server.register(userRoutes, { prefix: "/user" });
+    this.server.register(pizzaRoutes, { prefix: "/pizza" });
   }
 
   static get Instance(): Server {

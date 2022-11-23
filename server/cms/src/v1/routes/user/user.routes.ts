@@ -1,8 +1,5 @@
 import { FastifyInstance } from "fastify";
-import prisma from "../../configs/database";
-import upload from "../../configs/multer";
-import IUserRequest from "../../interfaces/user.interface";
-import uploadProfilePicture from "../../middleware/upload/uploadProfilePicture";
+import { FirebaseService } from "../../services";
 import { getUserOptions } from "./user.schema";
 
 export default async function userRoutes(server: FastifyInstance) {
@@ -10,19 +7,21 @@ export default async function userRoutes(server: FastifyInstance) {
   server.post(
     "/",
     {
-      onRequest: [upload.single("avatar")],
       schema: getUserOptions,
-      // @ts-ignore
-      preHandler: uploadProfilePicture,
     },
-    async (req: IUserRequest, rep) => {
-      const { path, body } = req;
+    async (req , rep) => {
+      const { body } = req
 
-      console.log(body);
+      // @ts-ignore
+      const { avatar } = body
+
+      await avatar.toBuffer()      
+      
+      const url = await FirebaseService.uploadImage(avatar)
 
       rep.send([
         {
-          profilePicture: req.path,
+          profilePicture: url,
         },
       ]);
     }
