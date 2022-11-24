@@ -127,6 +127,8 @@ model tbl_product {
 
   @@index([status_id], map: "FK_status_product")
   @@index([created_by], map: "FK_user_product")
+
+  @@map("product")
 }
 
 model tbl_product_pictures {

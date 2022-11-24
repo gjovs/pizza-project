@@ -11,10 +11,17 @@ const User = {
   },
 };
 
-const getUserOptions = {
+const createUserOptions = {
   body: {
     type: "object",
-    required: ["nome", "profile_picture"],
+    required: [
+      "name",
+      "profile_picture",
+      "email",
+      "cellphone",
+      "phone",
+      "password",
+    ],
     properties: {
       profile_picture: { type: "object" },
       name: {
@@ -33,16 +40,51 @@ const getUserOptions = {
           },
         },
       },
+      cellphone: {
+        type: "object",
+        properties: {
+          value: {
+            type: "number",
+          },
+        },
+      },
+      phone: {
+        type: "object",
+        properties: {
+          value: {
+            type: "number",
+          },
+        },
+      },
+      password: {
+        type: "object",
+        properties: {
+          value: {
+            type: "string",
+          },
+        },
+      },
     },
   },
   response: {
     200: {
-      type: "array",
-      items: {
-        User,
+      type: "object",
+      properties: {
+        statusCode: {
+          type: "number",
+        },
+        payload: {
+          type: "array",
+          items: {
+            User,
+          },
+        },
+        error: {
+          type: "boolean",
+        },
       },
     },
   },
 };
 
-export { getUserOptions, User };
+export { createUserOptions, User };
