@@ -1,0 +1,161 @@
+openapi: 3.0.3
+info:
+  title: API Pizzaria Paradiso CMS
+  description: |-
+   API destinada a controle do CMS da pizzaria
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: 00drpixelss@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://
+paths:
+  /v1/user/login:
+    post: 
+      tags:
+        - User
+      summary: Login a user
+      description: Login a user
+      security: 
+        - BearerAuth: [write]
+      requestBody:
+        required: true
+        description: Objeto que deve ser enviado no body do post para criacao de um usuario no banco
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+              type: object
+              properties: 
+                email: 
+                  type: string
+                password: 
+                  type: string
+      responses:
+        '200':
+          description: successful operation
+        '401':  
+          description: unauthorized 
+        
+  /v1/user/register:
+    post: 
+      tags:
+        - User
+      summary: Create a new User
+      description: Create a new User
+      security: 
+        - BearerAuth: [write]
+      requestBody: 
+        $ref: '#/components/requestBodies/UserBody'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+  /v1/promocoes:   
+    post: 
+      tags:
+        - Produtos
+      summary: Criar uma promocao para um produto ou mais
+      description: Criar uma promocao para um produto ou mais
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              required:
+                - product_id
+                - sale_off_value
+              type: object
+              properties:
+                product_id:
+                  type: integer
+                sale_off_value:
+                  type: integer
+      responses:
+        '200': 
+          description: promocao criada com sucesso
+        '400':
+          description: bad request em criar a promocao
+  /v1/pizza:
+    post:
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      
+  schemas:
+    User:
+      required:
+          - nome
+          - email
+          - phone
+          - cellphone
+          - password
+          - profilePicture
+      type: object
+      properties:
+          id:
+            type: integer
+          nome:
+            type: string
+          cellphone:
+            type: integer
+          phone:
+            type: integer
+          email:
+            type: string
+          password: 
+            type: string
+          profilePicture:
+            type: string
+            format: binary
+    Pizza:
+     required: 
+      - picture
+      - name
+      - stuffings
+      - type_pizza
+      - tamanho
+      - price
+      - owner_id
+    type: object  
+    properties:
+      id: 
+        type: integer
+      tamanho: 
+        type: string
+      owner_id: 
+        type: integer
+      name: 
+        type: string
+      type_pizza:
+        type: string
+      stuffings:
+        type: array
+        items: 
+          schema:
+            type: object
+            properties: 
+              name: string
+      price:
+        type: integer
+      picture: 
+        type: string
+        format: binary
+    
+  requestBodies:
+    UserBody:
+      description: Objeto que deve ser enviado no body do post para criacao de um usuario no banco
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/User'
+          

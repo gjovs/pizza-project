@@ -8,17 +8,31 @@ const User = {
     phone: { type: "string", length: 13 },
     cellphone: { type: "string", length: 15 },
     password: { type: "string", length: 256 },
-    isAdmin: { type: "boolean" },
   },
 };
 
 const getUserOptions = {
   body: {
     type: "object",
-    required:['nome','avatar'],
+    required: ["nome", "profile_picture"],
     properties: {
-      avatar: { type: "object" },
-      nome: { type: "object" },
+      profile_picture: { type: "object" },
+      name: {
+        type: "object",
+        properties: {
+          value: {
+            type: "string",
+          },
+        },
+      },
+      email: {
+        type: "object",
+        properties: {
+          value: {
+            type: "string",
+          },
+        },
+      },
     },
   },
   response: {

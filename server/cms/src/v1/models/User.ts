@@ -1,25 +1,24 @@
 import prisma from '../configs/database'
 
-export default interface User {
+export interface IUser {
   id: number;
-  profile_picture: string;
+  profile_picture: unknown;
   name: string;
   email: string;
   phone: string;
   cellphone: string;
   password: string;
-  isAdmin: boolean;
 }
 
-export default class User {
-  async save(data: User) {
-    const { id } = await prisma.tbl_user.create({
+export class User {
+  async save(data: IUser) {
+    const { id } = await prisma.user.create({
       data: {
         name: data.name,
         cellphone: data.cellphone,
         email: data.email,
         password: data.password,
-        profile_picture: data.profile_picture,
+        profile_picture: data.profile_picture as string,
         phone: data.phone,
         isAdmin: false
       }

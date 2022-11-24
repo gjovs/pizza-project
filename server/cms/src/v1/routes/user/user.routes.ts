@@ -1,4 +1,5 @@
 import { FastifyInstance } from "fastify";
+import { IUser } from "../../models/User";
 import { FirebaseService } from "../../services";
 import { getUserOptions } from "./user.schema";
 
@@ -9,15 +10,15 @@ export default async function userRoutes(server: FastifyInstance) {
     {
       schema: getUserOptions,
     },
-    async (req , rep) => {
-      const { body } = req
+    async (req, rep) => {
+      const { body } = req;
 
       // @ts-ignore
-      const { avatar } = body
+      const { profile_picture, name, email } = body;
 
-      await avatar.toBuffer()      
-      
-      const url = await FirebaseService.uploadImage(avatar)
+      await profile_picture.toBuffer();
+
+      const url = await FirebaseService.uploadImage(profile_picture);
 
       rep.send([
         {
