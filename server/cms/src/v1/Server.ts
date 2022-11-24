@@ -1,10 +1,8 @@
 import cors from "@fastify/cors";
-
 import Fastify, { FastifyInstance } from "fastify";
 import multipart from "@fastify/multipart";
 
 import { userRoutes } from "./routes";
-import pizzaRoutes from "./routes/pizza/pizza.routes";
 
 export default class Server {
   private static _instance: Server | null;
@@ -27,7 +25,6 @@ export default class Server {
 
   private routes() {
     this.server.register(userRoutes, { prefix: "/user" });
-    this.server.register(pizzaRoutes, { prefix: "/pizza" });
   }
 
   static get Instance(): Server {
