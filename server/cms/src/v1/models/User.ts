@@ -72,6 +72,16 @@ class User {
 
     return res;
   }
+
+  async getUserByEmail(email: string) {
+    const res = await db.user.findMany({
+      where: {
+        email,
+      },
+    });
+
+    return res;
+  }
 }
 
 export default new User();

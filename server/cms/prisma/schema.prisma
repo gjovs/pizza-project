@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 model drink {
   id            Int         @id @unique(map: "id") @default(autoincrement())
   volume        Int
@@ -53,7 +57,8 @@ model pizza {
   product_id       Int?
   pizza_type_id    Int?
   pizza_type       pizza_type?        @relation("tbl_pizza_tbl_pizza_type", fields: [pizza_type_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_pizza_type_pizza")
-  product          product?           @relation("tbl_pizzaTotbl_product", fields: [product_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_product_pizza")
+  product          product?           @relation("tbl_pizzaTotbl_product", fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "FK_product_pizza")
+  
   pizza_ingredient pizza_ingredient[]
   pizza_stuffing   pizza_stuffing[]
 
@@ -115,7 +120,7 @@ model tbl_product_pictures {
   id         Int      @id @default(autoincrement())
   product_id Int?
   picture_id Int?
-  picture    picture? @relation(fields: [picture_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_picture_product_pictures")
+  picture    picture? @relation(fields: [picture_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "FK_picture_product_pictures")
   product    product? @relation("tbl_productTotbl_product_pictures", fields: [product_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_product_product_pictures")
 
   @@index([picture_id], map: "FK_picture_product_pictures")

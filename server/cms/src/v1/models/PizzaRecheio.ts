@@ -53,3 +53,5 @@ class PizzaRecheio {
     return response;
   }
 }
+
+export default new PizzaRecheio();

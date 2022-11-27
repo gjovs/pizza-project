@@ -1,5 +1,6 @@
 import { drink, drink_type } from "@prisma/client";
 import { db } from "../configs/database";
+import Product from "./Product";
 
 class Bebida {
   async save(data: drink) {
@@ -38,8 +39,24 @@ class Bebida {
   }
 
   async delete(id: number) {
-    const response = await db.drink.delete({
+    const { product_id } = await db.drink.delete({
       where: { id },
+    });
+
+    await Product.delete(product_id as number);
+
+    return true;
+  }
+
+  async update(data: drink) {
+    const response = await db.drink.update({
+      data: {
+        drink_type_id: data.drink_type_id,
+        volume: data.volume,
+      },
+      where: {
+        id: data.id,
+      },
     });
 
     return response;
@@ -86,3 +103,5 @@ class Bebida {
     return true;
   }
 }
+
+export default new Bebida();

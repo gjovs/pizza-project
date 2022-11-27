@@ -30,12 +30,6 @@ class UserController {
       payload: [user],
     });
   }
-
-  async auth(req: FastifyRequest, rep: FastifyReply) {
-    const { email, password } = req.body
-    
-    
-  }
 }
 
 export default new UserController();

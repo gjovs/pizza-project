@@ -57,9 +57,9 @@ class Promocao {
     const response = await db.sale_off_products.findMany({
       include: {
         product: {
-            select: {
-              pizza: true
-            }
+          select: {
+            pizza: true,
+          },
         },
       },
     });
@@ -71,13 +71,15 @@ class Promocao {
     const response = await db.sale_off_products.findMany({
       include: {
         product: {
-            select: {
-              drink: true
-            }
+          select: {
+            drink: true,
+          },
         },
       },
     });
 
-    return response
+    return response;
   }
 }
+
+export default new Promocao();

@@ -1,10 +1,8 @@
 import { db } from "../configs/database";
 
-import {
-  product,
-} from "@prisma/client";
+import { product } from "@prisma/client";
 
-export class Product {
+class Product {
   async save(data: product): Promise<number> {
     const { id } = await db.product.create({
       data: {
@@ -31,23 +29,35 @@ export class Product {
     return response;
   }
 
-  async update(data: product, id: number) {
+  async update(data: product) {
     const response = await db.product.update({
       where: {
-        id,
+        id: data.id,
       },
 
       data: {
         name: data.name,
-        price: data.price
-      }
+        price: data.price,
+      },
     });
 
-    return response
+    return response;
   }
 
   async delete(id: number): Promise<boolean> {
-    const response = db.product.delete({
+    await db.tbl_product_pictures.deleteMany({
+      where: {
+        product_id: id,
+      },
+    });
+    // delete the sale off relations
+    await db.sale_off_products.deleteMany({
+      where: {
+        product_id: id,
+      },
+    });
+
+    const response = await db.product.delete({
       where: {
         id,
       },
@@ -57,3 +67,5 @@ export class Product {
     return true;
   }
 }
+
+export default new Product();

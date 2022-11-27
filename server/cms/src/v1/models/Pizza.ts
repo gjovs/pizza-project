@@ -1,8 +1,9 @@
 import { db } from "../configs/database";
 
 import { pizza, pizza_type } from "@prisma/client";
+import Product from "./Product";
 
-export class Pizza {
+class Pizza {
   async save(data: pizza) {
     const response = await db.pizza.create({
       data: {
@@ -17,6 +18,14 @@ export class Pizza {
   async index() {
     const response = await db.pizza.findMany({
       include: {
+        product: {
+          select: {
+            name: true,
+            price: true,
+            likes: true,
+            id: true,
+          },
+        },
         pizza_ingredient: {
           select: {
             ingredient: true,
@@ -44,16 +53,56 @@ export class Pizza {
       where: {
         id,
       },
+      include: {
+        product: {
+          select: {
+            name: true,
+            price: true,
+            likes: true,
+            id: true,
+          },
+        },
+        pizza_ingredient: {
+          select: {
+            ingredient: true,
+          },
+        },
+        pizza_stuffing: {
+          select: {
+            stuffing: true,
+          },
+        },
+        pizza_type: {
+          select: {
+            name: true,
+            dimensions: true,
+          },
+        },
+      },
     });
     return response;
   }
 
   async delete(id: number) {
-    const response = await db.pizza.delete({
+    await db.pizza_stuffing.deleteMany({
+      where: {
+        pizza_id: id,
+      },
+    });
+
+    await db.pizza_ingredient.deleteMany({
+      where: {
+        pizza_id: id,
+      },
+    });
+
+    const { product_id } = await db.pizza.delete({
       where: { id },
     });
 
-    return response;
+    Product.delete(product_id as number);
+
+    return true;
   }
 
   /*TYPES*/
@@ -99,3 +148,5 @@ export class Pizza {
     return true;
   }
 }
+
+export default new Pizza();

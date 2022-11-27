@@ -1,6 +1,7 @@
 import cors from "@fastify/cors";
 import Fastify, { FastifyInstance } from "fastify";
 import multipart from "@fastify/multipart";
+import jwt from "@fastify/jwt";
 
 import { userRoutes } from "./routes";
 
@@ -17,11 +18,11 @@ export default class Server {
     this.middlewares();
     this.routes();
   }
-
   private async middlewares() {
+    this.server.register(jwt, { secret: "mysecret" });
     this.server.register(multipart, { attachFieldsToBody: true });
     await this.server.register(cors, { origin: true });
-  }
+   }
 
   private routes() {
     this.server.register(userRoutes, { prefix: "/user" });
