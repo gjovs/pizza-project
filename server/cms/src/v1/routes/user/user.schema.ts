@@ -1,66 +1,66 @@
 const User = {
-  type: "object",
+  type: 'object',
   properties: {
-    id: { type: "int" },
-    profile_picture: { type: "string" },
-    name: { type: "string", length: 256 },
-    email: { type: "string", length: 256 },
-    phone: { type: "string", length: 13 },
-    cellphone: { type: "string", length: 15 },
-    password: { type: "string", length: 256 },
+    id: { type: 'int' },
+    profile_picture: { type: 'string' },
+    name: { type: 'string', length: 256 },
+    email: { type: 'string', length: 256 },
+    phone: { type: 'string', length: 13 },
+    cellphone: { type: 'string', length: 15 },
+    password: { type: 'string', length: 256 },
   },
 };
 
 const createUserOptions = {
   body: {
-    type: "object",
+    type: 'object',
     required: [
-      "name",
-      "profile_picture",
-      "email",
-      "cellphone",
-      "phone",
-      "password",
+      'name',
+      'profile_picture',
+      'email',
+      'cellphone',
+      'phone',
+      'password',
     ],
     properties: {
-      profile_picture: { type: "object" },
+      profile_picture: { type: 'object' },
       name: {
-        type: "object",
+        type: 'object',
         properties: {
           value: {
-            type: "string",
+            type: 'string',
           },
         },
       },
       email: {
-        type: "object",
+        type: 'object',
         properties: {
           value: {
-            type: "string",
+            type: 'string',
           },
         },
       },
       cellphone: {
-        type: "object",
+        type: 'object',
         properties: {
           value: {
-            type: "number",
+            type: 'number',
           },
         },
       },
       phone: {
-        type: "object",
+        type: 'object',
         properties: {
           value: {
-            type: "number",
+            type: 'number',
           },
         },
       },
       password: {
-        type: "object",
+        type: 'object',
         properties: {
           value: {
-            type: "string",
+            type: 'string',
           },
         },
       },
@@ -68,23 +68,26 @@ const createUserOptions = {
   },
   response: {
     200: {
-      type: "object",
+      type: 'object',
       properties: {
         statusCode: {
-          type: "number",
+          type: 'number',
         },
         payload: {
-          type: "array",
+          type: 'array',
           items: {
             User,
           },
         },
         error: {
-          type: "boolean",
+          type: 'boolean',
         },
       },
     },
   },
 };
 
-export { createUserOptions, User };
+// email and password ==> JWT
+const loginOptions = {};
+
+export { createUserOptions, loginOptions };

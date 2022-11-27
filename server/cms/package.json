@@ -5,8 +5,10 @@
   "main": "server.js",
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "dev": "tsx watch ./bin/www/server.ts"
+    "dev": "tsx watch ./bin/www/server.ts",
+    "seed": "tsx prisma/seed.ts"
   },
+
   "dependencies": {
     "@fastify/cors": "^8.2.0",
     "@fastify/multipart": "^7.3.0",

@@ -7,7 +7,6 @@ CREATE TABLE
         id int not null primary key auto_increment,
         name varchar(256) not null,
         email varchar(256) not null,
-        phone varchar(13) not null,
         cellphone varchar(15) not null,
         profile_picture varchar(256),
         password varchar(256) not null,
@@ -20,18 +19,9 @@ CREATE TABLE
         id int not null primary key auto_increment,
         name varchar(256),
         price DECIMAL(10, 2) not null,
+        likes int,
         created_by int not null,
-        status_id int,
         CONSTRAINT FK_user_product foreign key (created_by) references tbl_user (id),
-        CONSTRAINT FK_status_product foreign Key (status_id) REFERENCES tbl_product_status(id),
-        unique index(id)
-    );
-
-CREATE TABLE
-    tbl_product_status(
-        id int not null primary key AUTO_INCREMENT,
-        updated_by int not null,
-        updated_at DATETIME default now(),
         unique index(id)
     );
 
@@ -70,9 +60,10 @@ CREATE TABLE
     tbl_pizza (
         id int not null primary key auto_increment,
         product_id int,
-        pizza_type int,
+        pizza_type_id int,
+        
         CONSTRAINT FK_product_pizza foreign key (product_id) references tbl_product(id),
-        CONSTRAINT FK_pizza_type_pizza foreign key (pizza_type) references tbl_pizza_type(id),
+        CONSTRAINT FK_pizza_type_pizza foreign key (pizza_type_id) references tbl_pizza_type(id),
         unique index(id)
     );
 
@@ -121,31 +112,16 @@ CREATE TABLE
         unique index(id)
     );
 
-CREATE TABLE
-    tbl_sale_off (
-        id int not null primary key auto_increment,
-        off_value DECIMAL(10, 2),
-        unique index(id)
-    );
 
 CREATE TABLE
     tbl_sale_off_products (
         id int not null primary key AUTO_INCREMENT,
         product_id int,
-        sale_off int,
-        CONSTRAINT FK_product_sale_off_products foreign key (product_id) references tbl_product(id),
-        CONSTRAINT FK_sale_off_sale_off_products foreign key (sale_off) references tbl_sale_off (id),
+		off_value DECIMAL(10, 2),
+        CONSTRAINT FK_product_sale_off_products foreign key (product_id) references tbl_product (id),
         unique index(id)
     );
 
-CREATE TABLE
-    tbl_like_product (
-        id int not null primary key auto_increment,
-        likes int,
-        product_id int,
-        CONSTRAINT FK_product_like foreign key (product_id) references tbl_product(id),
-        unique index(id)
-    );
 
 CREATE TABLE
     tbl_message (

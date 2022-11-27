@@ -1,21 +1,59 @@
-export interface IProduct {
-  name: string;
-  price: number;
-  owner_id: number;
-  status_id: number | null;
-}
+import { db } from "../configs/database";
+
+import {
+  product,
+} from "@prisma/client";
 
 export class Product {
-  async save(): Promise<number> {
-    return 1;
+  async save(data: product): Promise<number> {
+    const { id } = await db.product.create({
+      data: {
+        name: data.name,
+        price: data.price,
+        created_by: data.created_by,
+      },
+    });
+    return id;
   }
-  async show() {}
 
-  async update() {}
-  async delete() {}
-  async index() {}
+  async index(): Promise<product[]> {
+    const response = await db.product.findMany();
 
-  async getPizzas() {}
+    return response;
+  }
+  async show(id: number): Promise<product | null> {
+    const response = await db.product.findUnique({
+      where: {
+        id,
+      },
+    });
 
-  async getBebidas() {}
+    return response;
+  }
+
+  async update(data: product, id: number) {
+    const response = await db.product.update({
+      where: {
+        id,
+      },
+
+      data: {
+        name: data.name,
+        price: data.price
+      }
+    });
+
+    return response
+  }
+
+  async delete(id: number): Promise<boolean> {
+    const response = db.product.delete({
+      where: {
+        id,
+      },
+    });
+
+    if (!response) return false;
+    return true;
+  }
 }

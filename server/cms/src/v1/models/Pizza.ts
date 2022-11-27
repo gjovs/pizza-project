@@ -1,35 +1,101 @@
-export interface IPizza {
-  product_id: number;
-  pizza_type_id: number;
-  stuffing_id: number;
-}
+import { db } from "../configs/database";
 
-export interface IPizzaType {}
-
-export interface IStuffing {}
+import { pizza, pizza_type } from "@prisma/client";
 
 export class Pizza {
-  async save() {}
-  async index() {}
-  async show() {}
-  async update() {}
-  async delete() {}
+  async save(data: pizza) {
+    const response = await db.pizza.create({
+      data: {
+        product_id: data.product_id,
+        pizza_type_id: data.pizza_type_id,
+      },
+    });
+
+    return response;
+  }
+
+  async index() {
+    const response = await db.pizza.findMany({
+      include: {
+        pizza_ingredient: {
+          select: {
+            ingredient: true,
+          },
+        },
+        pizza_stuffing: {
+          select: {
+            stuffing: true,
+          },
+        },
+        pizza_type: {
+          select: {
+            name: true,
+            dimensions: true,
+          },
+        },
+      },
+    });
+
+    return response;
+  }
+
+  async show(id: number) {
+    const response = await db.pizza.findUnique({
+      where: {
+        id,
+      },
+    });
+    return response;
+  }
+
+  async delete(id: number) {
+    const response = await db.pizza.delete({
+      where: { id },
+    });
+
+    return response;
+  }
 
   /*TYPES*/
-  async savePizzaTypes() {}
+  async savePizzaTypes(data: pizza_type) {
+    const response = await db.pizza_type.create({
+      data: {
+        name: data.name,
+        dimensions: data.dimensions,
+      },
+    });
 
-  async getPizzaTypes() {}
+    return response;
+  }
 
-  async updatePizzaTypes() {}
+  async getPizzaTypes() {
+    const response = await db.pizza_type.findMany();
 
-  async deletePizzaTypes() {}
+    return response;
+  }
 
-  /*STUFFINGS*/
-  async savePizzaStuffing() {}
+  async updatePizzaTypes(data: pizza_type, id: number) {
+    const response = await db.pizza_type.update({
+      where: {
+        id,
+      },
+      data: {
+        name: data.name,
+        dimensions: data.dimensions,
+      },
+    });
 
-  async getPizzaStuffing() {}
+    return response;
+  }
 
-  async updatePizzaStuffing() {}
+  async deletePizzaTypes(id: number) {
+    const response = await db.pizza_type.delete({
+      where: {
+        id,
+      },
+    });
 
-  async deletePizzaStuffing() {}
+    if (!response) return false;
+    return true;
+  }
 }
