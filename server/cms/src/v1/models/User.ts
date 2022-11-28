@@ -1,4 +1,4 @@
-import { user, product } from "@prisma/client";
+import { user } from "@prisma/client";
 import { db } from "../configs/database";
 
 class User {
