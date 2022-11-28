@@ -4,6 +4,10 @@ import { pizza, pizza_type } from "@prisma/client";
 import Product from "./Product";
 
 class Pizza {
+  async count() {
+    const res = await db.pizza.count();
+    return res;
+  }
   async save(data: pizza) {
     const response = await db.pizza.create({
       data: {
@@ -100,7 +104,7 @@ class Pizza {
       where: { id },
     });
 
-    Product.delete(product_id as number);
+    await Product.delete(product_id as number);
 
     return true;
   }
@@ -121,6 +125,18 @@ class Pizza {
     const response = await db.pizza_type.findMany();
 
     return response;
+  }
+
+  async getPizzaTypeByName(name: string) {
+    const response = await db.pizza_type.findMany({
+      where: {
+        name,
+      },
+    });
+
+    if (response.length <= 0) return false;
+
+    return response[0].id;
   }
 
   async updatePizzaTypes(data: pizza_type, id: number) {

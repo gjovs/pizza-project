@@ -5,7 +5,6 @@ const User = {
     profile_picture: { type: "string" },
     name: { type: "string", length: 256 },
     email: { type: "string", length: 256 },
-    phone: { type: "string", length: 13 },
     cellphone: { type: "string", length: 15 },
     password: { type: "string", length: 256 },
   },
@@ -14,14 +13,7 @@ const User = {
 const createUserOptions = {
   body: {
     type: "object",
-    required: [
-      "name",
-      "profile_picture",
-      "email",
-      "cellphone",
-      "phone",
-      "password",
-    ],
+    required: ["name", "profile_picture", "email", "cellphone", "password"],
     properties: {
       profile_picture: { type: "object" },
       name: {
@@ -41,14 +33,6 @@ const createUserOptions = {
         },
       },
       cellphone: {
-        type: "object",
-        properties: {
-          value: {
-            type: "number",
-          },
-        },
-      },
-      phone: {
         type: "object",
         properties: {
           value: {

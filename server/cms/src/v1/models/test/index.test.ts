@@ -109,7 +109,7 @@ const testPizza = async () => {
 
   await Promocao.save({
     id: -1,
-    off_value: new Decimal(10),
+    off_value: new Decimal(10.0),
     product_id: productId,
   });
 
