@@ -2,6 +2,10 @@ import { user } from "@prisma/client";
 import { db } from "../configs/database";
 
 class User {
+  async count() {
+    const res = await db.user.count();
+    return res;
+  }
   async index() {
     const res = await db.user.findMany();
     return res;
@@ -28,6 +32,9 @@ class User {
         isAdmin: data.isAdmin,
       },
     });
+
+    console.log(id);
+    
 
     return id;
   }

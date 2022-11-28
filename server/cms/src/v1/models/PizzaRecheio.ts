@@ -12,6 +12,16 @@ class PizzaRecheio {
 
     return response;
   }
+  async showByName(name: string) {
+    const response = await db.stuffing.findMany({
+      where: {
+        name,
+      },
+    });
+    
+    if (response.length <= 0) return false;
+    return response[0];
+  }
 
   async index() {
     const response = await db.stuffing.findMany();
