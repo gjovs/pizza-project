@@ -8,7 +8,11 @@ class Picture {
     return res;
   }
   async index() {
-    const response = await db.picture.findMany();
+    const response = await db.picture.findMany({
+      include: {
+        tbl_product_pictures: true,
+      },
+    });
 
     return response;
   }
@@ -16,6 +20,9 @@ class Picture {
     const response = await db.picture.findUnique({
       where: {
         id,
+      },
+      include: {
+        tbl_product_pictures: true,
       },
     });
 

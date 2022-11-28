@@ -23,11 +23,12 @@ class Pizza {
     const response = await db.pizza.findMany({
       include: {
         product: {
-          select: {
-            name: true,
-            price: true,
-            likes: true,
-            id: true,
+          include: {
+            tbl_product_pictures: {
+              select: {
+                picture_id: true,
+              },
+            },
           },
         },
         pizza_ingredient: {
@@ -59,11 +60,12 @@ class Pizza {
       },
       include: {
         product: {
-          select: {
-            name: true,
-            price: true,
-            likes: true,
-            id: true,
+          include: {
+            tbl_product_pictures: {
+              select: {
+                picture_id: true,
+              },
+            },
           },
         },
         pizza_ingredient: {

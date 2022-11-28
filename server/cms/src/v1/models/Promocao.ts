@@ -19,6 +19,7 @@ class Promocao {
   }
 
   async update(data: sale_off_products, id: number) {
+
     const response = await db.sale_off_products.update({
       where: {
         id,
