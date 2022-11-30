@@ -1,12 +1,11 @@
-import { picture, pizza_ingredient, product } from "@prisma/client";
 import { FastifyRequest, FastifyReply } from "fastify";
+
 import Ingredient from "../models/Ingredient";
 import Picture from "../models/Picture";
 import Pizza from "../models/Pizza";
 import PizzaRecheio from "../models/PizzaRecheio";
 import Product from "../models/Product";
 import Promocao from "../models/Promocao";
-import { tbl_ingredient } from "@prisma/client";
 
 import { FirebaseService } from "../services";
 import { Decimal } from "@prisma/client/runtime";
@@ -209,7 +208,15 @@ class PizzaController {
     });
   }
 
-  async update(req: FastifyRequest, rep: FastifyReply) {
+  async update(
+    req: FastifyRequest<{
+      Params: {
+        id: string;
+      };
+    }>,
+    rep: FastifyReply
+  ) {
+    // @ts-ignore
     const { picture, stuffing, price, saleOffValue, type, ingredient } =
       req.body;
 
@@ -292,7 +299,7 @@ class PizzaController {
       const relationId = pizza?.pizza_stuffing[0].id;
       await PizzaRecheio.updatePizzaWithStuffing({
         id: relationId as number,
-        pizza_id: pizzaId,
+        pizza_id: parseInt(pizzaId),
         stuffing_id: stuffingInDb.id,
       });
     }

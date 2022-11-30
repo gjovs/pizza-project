@@ -145,4 +145,77 @@ const createPizzaOptions = {
   },
 };
 
-export { createPizzaOptions };
+
+
+const updatePizzaOptions = {
+    body: {
+      type: "object",
+      properties: {
+        picture: { type: "object" },
+        price: {
+          type: "object",
+          properties: {
+            value: {
+              type: "number",
+            },
+          },
+        },
+        ingredient: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              value: {
+                type: "string",
+              },
+            },
+          },
+        },
+        stuffing: {
+          type: "object",
+          properties: {
+            value: {
+              type: "string",
+            },
+          },
+        },
+        saleOffValue: {
+          type: "object",
+          properties: {
+            value: {
+              type: "number",
+            },
+          },
+        },
+        type: {
+          type: "object",
+          properties: {
+            value: {
+              type: "string",
+            },
+          },
+        },
+      },
+    },
+    response: {
+      200: {
+        type: "object",
+        properties: {
+          statusCode: {
+            type: "number",
+          },
+          payload: {
+            type: "array",
+            items: {
+              Pizza,
+            },
+          },
+          error: {
+            type: "boolean",
+          },
+        },
+      },
+    },
+  };
+
+export { createPizzaOptions, updatePizzaOptions };

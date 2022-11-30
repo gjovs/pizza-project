@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import PizzaController from "../../controllers/PizzaController";
-import { createPizzaOptions } from "./schema.pizza";
+import { createPizzaOptions, updatePizzaOptions } from "./schema.pizza";
 
 export default async function pizzaRoutes(server: FastifyInstance) {
   // JWT VALIDATION
@@ -16,7 +16,6 @@ export default async function pizzaRoutes(server: FastifyInstance) {
   );
 
   server.get("/count", {}, PizzaController.count);
-
   server.get("/", PizzaController.index);
   server.get("/:id", PizzaController.show);
 
@@ -28,7 +27,7 @@ export default async function pizzaRoutes(server: FastifyInstance) {
 
   server.put(
     "/:id",
-    { onRequest: [server.authenticate] },
+    { onRequest: [server.authenticate], schema: updatePizzaOptions },
     PizzaController.update
   );
   server.delete(
