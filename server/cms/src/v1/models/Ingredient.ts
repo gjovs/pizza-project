@@ -46,13 +46,15 @@ class Ingredient {
   }
 
   async getByName(name: string) {
+  
     const response = await db.tbl_ingredient.findMany({
       where: {
         name: name,
       },
-    });
+    });  
 
-    return response;
+    if (response.length <= 0) return false
+    return response[0];
   }
 
   async addIngredientInPizza(data: pizza_ingredient) {
@@ -66,13 +68,29 @@ class Ingredient {
     return response;
   }
 
-  async deleteIngredientInPizza(data: pizza_ingredient) {
+  async deleteIngredientInPizza(id: number) {
     const response = await db.pizza_ingredient.delete({
       where: {
-        id: data.id,
+        id,
       },
     });
 
     return response;
   }
+
+  async updateIngrendientInPizza(data: pizza_ingredient) {
+    const res = await db.pizza_ingredient.update({
+      data: {
+        ingredient_id: data.ingredient_id
+      },
+      where: {
+        id: data.id,
+      }
+    })
+  }
 }
+
+
+
+
+export default new Ingredient();

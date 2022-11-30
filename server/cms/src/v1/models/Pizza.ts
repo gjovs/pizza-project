@@ -19,6 +19,19 @@ class Pizza {
     return response;
   }
 
+  async update(data: pizza) {
+    const response = await db.pizza.update({
+      data: {
+        product_id: data.product_id,
+        pizza_type_id: data.pizza_type_id,
+      },
+      where: {
+        id: data.id,
+      },
+    });
+
+    return response;
+  }
   async index() {
     const response = await db.pizza.findMany({
       include: {
@@ -27,17 +40,30 @@ class Pizza {
             tbl_product_pictures: {
               select: {
                 picture_id: true,
+                picture: {
+                  select: {
+                    picture_link: true,
+                  },
+                },
+              },
+            },
+            sale_off_products: {
+              select: {
+                id: true,
+                off_value: true,
               },
             },
           },
         },
         pizza_ingredient: {
           select: {
+            id: true,
             ingredient: true,
           },
         },
         pizza_stuffing: {
           select: {
+            id: true,
             stuffing: true,
           },
         },
@@ -46,6 +72,12 @@ class Pizza {
             name: true,
             dimensions: true,
           },
+        },
+      },
+
+      where: {
+        product: {
+          status: true,
         },
       },
     });
@@ -64,17 +96,30 @@ class Pizza {
             tbl_product_pictures: {
               select: {
                 picture_id: true,
+                picture: {
+                  select: {
+                    picture_link: true,
+                  },
+                },
+              },
+            },
+            sale_off_products: {
+              select: {
+                id: true,
+                off_value: true,
               },
             },
           },
         },
         pizza_ingredient: {
           select: {
+            id: true,
             ingredient: true,
           },
         },
         pizza_stuffing: {
           select: {
+            id: true,
             stuffing: true,
           },
         },
@@ -90,23 +135,18 @@ class Pizza {
   }
 
   async delete(id: number) {
-    await db.pizza_stuffing.deleteMany({
-      where: {
-        pizza_id: id,
-      },
-    });
-
-    await db.pizza_ingredient.deleteMany({
-      where: {
-        pizza_id: id,
-      },
-    });
-
-    const { product_id } = await db.pizza.delete({
+    const res = await db.pizza.update({
       where: { id },
+      data: {
+        product: {
+          update: {
+            status: false,
+          },
+        },
+      },
     });
 
-    await Product.delete(product_id as number);
+    if (!res) return false;
 
     return true;
   }
@@ -156,9 +196,12 @@ class Pizza {
   }
 
   async deletePizzaTypes(id: number) {
-    const response = await db.pizza_type.delete({
+    const response = await db.pizza_type.update({
       where: {
         id,
+      },
+      data: {
+        status: false,
       },
     });
 

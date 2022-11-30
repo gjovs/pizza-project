@@ -9,6 +9,7 @@ class Product {
         name: data.name,
         price: data.price,
         created_by: data.created_by,
+        status: data.status,
       },
     });
     return id;

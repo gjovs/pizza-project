@@ -91,10 +91,11 @@ model pizza_stuffing {
 }
 
 model pizza_type {
-  id         Int     @id @unique(map: "id") @default(autoincrement())
-  name       String  @db.VarChar(50)
-  dimensions String  @db.VarChar(20)
-  pizza      pizza[] @relation("tbl_pizza_tbl_pizza_type")
+  id         Int      @id @unique(map: "id") @default(autoincrement())
+  name       String   @db.VarChar(50)
+  dimensions String   @db.VarChar(20)
+  status     Boolean?
+  pizza      pizza[]  @relation("tbl_pizza_tbl_pizza_type")
 
   @@map("tbl_pizza_type")
 }
@@ -105,6 +106,7 @@ model product {
   price                Decimal                @db.Decimal(10, 2)
   likes                Int?
   created_by           Int
+  status               Boolean?
   user                 user                   @relation("tbl_productTotbl_user", fields: [created_by], references: [id], onUpdate: Restrict, map: "FK_user_product")
   drink                drink[]
   pizza                pizza[]                @relation("tbl_pizzaTotbl_product")
@@ -139,6 +141,7 @@ model sale_off_products {
 model stuffing {
   id             Int              @id @unique(map: "id") @default(autoincrement())
   name           String?          @db.VarChar(256)
+  status         Boolean?
   pizza_stuffing pizza_stuffing[]
 
   @@map("tbl_stuffing")

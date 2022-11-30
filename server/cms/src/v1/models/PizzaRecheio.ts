@@ -18,7 +18,7 @@ class PizzaRecheio {
         name,
       },
     });
-    
+
     if (response.length <= 0) return false;
     return response[0];
   }
@@ -57,6 +57,18 @@ class PizzaRecheio {
       data: {
         pizza_id: data.pizza_id,
         stuffing_id: data.stuffing_id,
+      },
+    });
+
+    return response;
+  }
+  async updatePizzaWithStuffing(data: pizza_stuffing) {
+    const response = await db.pizza_stuffing.update({
+      data: {
+        stuffing_id: data.stuffing_id,
+      },
+      where: {
+        id: data.id,
       },
     });
 
