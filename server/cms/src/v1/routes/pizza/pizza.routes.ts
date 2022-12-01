@@ -15,9 +15,17 @@ export default async function pizzaRoutes(server: FastifyInstance) {
     }
   );
 
-  server.get("/count", {}, PizzaController.count);
-  server.get("/", PizzaController.index);
-  server.get("/:id", PizzaController.show);
+  server.get(
+    "/count",
+    { onRequest: [server.authenticate] },
+    PizzaController.count
+  );
+  server.get("/", { onRequest: [server.authenticate] }, PizzaController.index);
+  server.get(
+    "/:id",
+    { onRequest: [server.authenticate] },
+    PizzaController.show
+  );
 
   server.post(
     "/",
@@ -30,6 +38,13 @@ export default async function pizzaRoutes(server: FastifyInstance) {
     { onRequest: [server.authenticate], schema: updatePizzaOptions },
     PizzaController.update
   );
+
+  server.put(
+    "/activate/:id",
+    { onRequest: [server.authenticate] },
+    PizzaController.activate
+  );
+
   server.delete(
     "/:id",
     { onRequest: [server.authenticate] },

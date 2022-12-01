@@ -7,11 +7,23 @@ class PizzaRecheio {
     const response = await db.stuffing.create({
       data: {
         name: data.name,
+        status: data.status,
       },
     });
 
     return response;
   }
+  async show(id: number) {
+    const response = await db.stuffing.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!response) return false;
+    return response;
+  }
+
   async showByName(name: string) {
     const response = await db.stuffing.findMany({
       where: {
@@ -29,10 +41,10 @@ class PizzaRecheio {
     return response;
   }
 
-  async update(data: stuffing, id: number) {
+  async update(data: stuffing) {
     const response = await db.stuffing.update({
       where: {
-        id,
+        id: data.id,
       },
       data: {
         name: data.name,
@@ -43,13 +55,111 @@ class PizzaRecheio {
   }
 
   async delete(id: number) {
-    const response = await db.stuffing.delete({
+    const response = await db.stuffing.update({
       where: {
         id,
       },
+      data: {
+        status: false,
+      },
     });
 
-    return response;
+    if (!response) return false;
+
+    const getAllPizzas = await db.stuffing.findMany({
+      where: {
+        id,
+      },
+      include: {
+        pizza_stuffing: {
+          include: {
+            pizza: {
+              include: {
+                product: {
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const productIds = getAllPizzas[0].pizza_stuffing.map((item) => {
+      return item.pizza?.product_id;
+    });
+
+    // updating the status to each product
+    await Promise.all(
+      productIds.map(async (id) => {
+        await db.product.update({
+          where: {
+            id: id as number,
+          },
+          data: {
+            status: false,
+          },
+        });
+      })
+    );
+
+    return true;
+  }
+
+  async activate(id: number) {
+    const response = await db.stuffing.update({
+      where: {
+        id,
+      },
+      data: {
+        status: true,
+      },
+    });
+
+    if (!response) return false;
+
+    const getAllPizzas = await db.stuffing.findMany({
+      where: {
+        id,
+      },
+      include: {
+        pizza_stuffing: {
+          include: {
+            pizza: {
+              include: {
+                product: {
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const productIds = getAllPizzas[0].pizza_stuffing.map((item) => {
+      return item.pizza?.product_id;
+    });
+
+    // updating the status to each product
+    await Promise.all(
+      productIds.map(async (id) => {
+        await db.product.update({
+          where: {
+            id: id as number,
+          },
+          data: {
+            status: true,
+          },
+        });
+      })
+    );
+
+    return true;
   }
 
   async savePizzaWithStuffing(data: pizza_stuffing) {

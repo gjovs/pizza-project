@@ -25,9 +25,10 @@ model drink {
 }
 
 model drink_type {
-  id    Int     @id @unique(map: "id") @default(autoincrement())
-  name  String  @db.VarChar(50)
-  drink drink[]
+  id     Int      @id @unique(map: "id") @default(autoincrement())
+  name   String   @db.VarChar(50)
+  status Boolean?
+  drink  drink[]
 
   @@map("tbl_drink_type")
 }

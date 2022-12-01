@@ -150,6 +150,22 @@ class Pizza {
 
     return true;
   }
+  async activate(id: number) {
+    const res = await db.pizza.update({
+      where: { id },
+      data: {
+        product: {
+          update: {
+            status: true,
+          },
+        },
+      },
+    });
+
+    if (!res) return false;
+
+    return true;
+  }
 
   /*TYPES*/
   async savePizzaTypes(data: pizza_type) {
@@ -157,6 +173,7 @@ class Pizza {
       data: {
         name: data.name,
         dimensions: data.dimensions,
+        status: data.status,
       },
     });
 
@@ -164,7 +181,11 @@ class Pizza {
   }
 
   async getPizzaTypes() {
-    const response = await db.pizza_type.findMany();
+    const response = await db.pizza_type.findMany({
+      where: {
+        status: true,
+      },
+    });
 
     return response;
   }
@@ -181,10 +202,10 @@ class Pizza {
     return response[0].id;
   }
 
-  async updatePizzaTypes(data: pizza_type, id: number) {
+  async updatePizzaTypes(data: pizza_type) {
     const response = await db.pizza_type.update({
       where: {
-        id,
+        id: data.id,
       },
       data: {
         name: data.name,
@@ -193,6 +214,59 @@ class Pizza {
     });
 
     return response;
+  }
+
+  async activatingPizzaTypes(id: number) {
+    const response = await db.pizza_type.update({
+      where: {
+        id,
+      },
+      data: {
+        status: true,
+      },
+    });
+
+    if (!response) return false;
+
+    const getAllPizzas = await db.pizza_type.findMany({
+      where: {
+        id,
+      },
+      include: {
+        pizza: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                status: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (getAllPizzas[0].pizza.length === 0) {
+      return true;
+    }
+
+    const productIds = getAllPizzas[0].pizza.map((item) => item.product_id);
+
+    // updating the status to each product with this type
+    await Promise.all(
+      productIds.map(async (id) => {
+        await db.product.update({
+          where: {
+            id: id as number,
+          },
+          data: {
+            status: true,
+          },
+        });
+      })
+    );
+
+    return true;
   }
 
   async deletePizzaTypes(id: number) {
@@ -204,6 +278,44 @@ class Pizza {
         status: false,
       },
     });
+
+    const getAllPizzas = await db.pizza_type.findMany({
+      where: {
+        id,
+      },
+      include: {
+        pizza: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                status: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (getAllPizzas[0].pizza.length === 0) {
+      return true;
+    }
+
+    const productIds = getAllPizzas[0].pizza.map((item) => item.product_id);
+
+    // updating the status to each product with this type
+    await Promise.all(
+      productIds.map(async (id) => {
+        await db.product.update({
+          where: {
+            id: id as number,
+          },
+          data: {
+            status: false,
+          },
+        });
+      })
+    );
 
     if (!response) return false;
     return true;

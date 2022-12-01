@@ -2,6 +2,11 @@ import { pizza_ingredient, tbl_ingredient } from "@prisma/client";
 import { db } from "../configs/database";
 
 class Ingredient {
+  async index() {
+    const response = await db.tbl_ingredient.findMany();
+
+    return response;
+  }
   async save(data: tbl_ingredient) {
     const response = await db.tbl_ingredient.create({
       data: {
@@ -23,22 +28,32 @@ class Ingredient {
   }
 
   async update(data: tbl_ingredient) {
-    const response = await db.tbl_ingredient.update({
+    try {
+      const response = await db.tbl_ingredient.update({
+        where: {
+          id: data.id,
+        },
+        data: {
+          name: data.name,
+        },
+      });
+
+      return response;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async delete(id: number) {
+    await db.pizza_ingredient.deleteMany({
       where: {
-        id: data.id,
-      },
-      data: {
-        name: data.name,
+        ingredient_id: id,
       },
     });
 
-    return response;
-  }
-
-  async delete(data: tbl_ingredient) {
     const response = await db.tbl_ingredient.delete({
       where: {
-        id: data.id,
+        id,
       },
     });
 
@@ -46,14 +61,13 @@ class Ingredient {
   }
 
   async getByName(name: string) {
-  
     const response = await db.tbl_ingredient.findMany({
       where: {
         name: name,
       },
-    });  
+    });
 
-    if (response.length <= 0) return false
+    if (response.length <= 0) return false;
     return response[0];
   }
 
@@ -77,20 +91,6 @@ class Ingredient {
 
     return response;
   }
-
-  async updateIngrendientInPizza(data: pizza_ingredient) {
-    const res = await db.pizza_ingredient.update({
-      data: {
-        ingredient_id: data.ingredient_id
-      },
-      where: {
-        id: data.id,
-      }
-    })
-  }
 }
-
-
-
 
 export default new Ingredient();
