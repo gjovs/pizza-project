@@ -67,6 +67,7 @@ class Bebida {
     const response = await db.drink_type.create({
       data: {
         name: data.name,
+        status: data.status,
       },
     });
 
@@ -93,13 +94,95 @@ class Bebida {
   }
 
   async deleteBebidaTypes(id: number) {
-    const response = await db.drink_type.delete({
+    const response = await db.drink_type.update({
       where: {
         id,
+      },
+      data: {
+        status: false,
       },
     });
 
     if (!response) return false;
+
+    const allProducts = await db.drink_type.findMany({
+      where: {
+        id,
+      },
+      include: {
+        drink: {
+          include: {
+            product: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const ids = allProducts[0].drink.map((item) => item.product_id);
+
+    Promise.all(
+      ids.map(async (id) => {
+        await db.product.update({
+          where: {
+            id: id as number,
+          },
+          data: {
+            status: false,
+          },
+        });
+      })
+    );
+
+    return true;
+  }
+  async activateBebidaTypes(id: number) {
+    const response = await db.drink_type.update({
+      where: {
+        id,
+      },
+      data: {
+        status: true,
+      },
+    });
+
+    if (!response) return false;
+
+    const allProducts = await db.drink_type.findMany({
+      where: {
+        id,
+      },
+      include: {
+        drink: {
+          include: {
+            product: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const ids = allProducts[0].drink.map((item) => item.product_id);
+
+    Promise.all(
+      ids.map(async (id) => {
+        await db.product.update({
+          where: {
+            id: id as number,
+          },
+          data: {
+            status: true,
+          },
+        });
+      })
+    );
+
     return true;
   }
 }

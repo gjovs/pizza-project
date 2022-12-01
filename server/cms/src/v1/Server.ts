@@ -5,6 +5,10 @@ import jwt from "@fastify/jwt";
 
 import { userRoutes } from "./routes";
 import pizzaRoutes from "./routes/pizza/pizza.routes";
+import pizzaTypesRoutes from "./routes/pizza/types/pizzaTypes.routes";
+import stuffingRoutes from "./routes/stuffing/stuffing.routes";
+import ingredientRoutes from "./routes/ingredient/ingredient.routes";
+import drinkRoutes from "./routes/drink/drink.routes";
 
 export default class Server {
   private static _instance: Server | null;
@@ -28,6 +32,10 @@ export default class Server {
   private routes() {
     this.server.register(userRoutes, { prefix: "/user" });
     this.server.register(pizzaRoutes, { prefix: "/pizza" });
+    this.server.register(pizzaTypesRoutes, { prefix: "/pizza/types" });
+    this.server.register(stuffingRoutes, { prefix: "/stuffing" });
+    this.server.register(ingredientRoutes, { prefix: "/ingredient" });
+    this.server.register(drinkRoutes, { prefix: "/drink" });
   }
 
   static get Instance(): Server {

@@ -181,6 +181,32 @@ class PizzaController {
     });
   }
 
+  async activate(
+    req: FastifyRequest<{
+      Params: {
+        id: string;
+      };
+    }>,
+    rep: FastifyReply
+  ) {
+    const { id } = req.params;
+    const res = await Pizza.activate(parseInt(id));
+    
+    if (!res) {
+      return rep.status(404).send({
+        error: true,
+        code: 404,
+        message: ["Content Not Founded"],
+      });
+    }
+
+    return rep.send({
+      code: 200,
+      error: false,
+      message: ["Sucefull activate!"]
+    })
+  }
+
   async show(
     req: FastifyRequest<{
       Params: {
