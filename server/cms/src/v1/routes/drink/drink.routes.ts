@@ -39,4 +39,10 @@ export default async function drinkRoutes(server: FastifyInstance) {
     { onRequest: [server.authenticate] },
     DrinkController.activate
   );
+
+  server.put(
+    "/:id",
+    { onRequest: [server.authenticate]},
+    DrinkController.update
+  )
 }
