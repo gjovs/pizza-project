@@ -17,10 +17,18 @@ class Bebida {
 
   async index() {
     const response = await db.drink.findMany({
-      include: {
-        drink_type: {
-          select: {
-            name: true,
+      select: {
+        id: true,
+        volume: true,
+        drink_type: true,
+        product: {
+          include: {
+            tbl_product_pictures: {
+              select: {
+                picture: true,
+              },
+            },
+            sale_off_products: true,
           },
         },
       },
@@ -34,17 +42,53 @@ class Bebida {
       where: {
         id,
       },
+      select: {
+        id: true,
+        volume: true,
+        drink_type: true,
+        product: {
+          include: {
+            tbl_product_pictures: {
+              select: {
+                picture: true,
+              },
+            },
+            sale_off_products: true,
+          },
+        },
+      },
     });
     return response;
   }
 
   async delete(id: number) {
-    const { product_id } = await db.drink.delete({
+    const response = await db.drink.update({
       where: { id },
+      data: {
+        product: {
+          update: {
+            status: false,
+          },
+        },
+      },
     });
 
-    await Product.delete(product_id as number);
+    if (!response) return false;
+    return true;
+  }
+  async activate(id: number) {
+    const response = await db.drink.update({
+      where: { id },
+      data: {
+        product: {
+          update: {
+            status: true,
+          },
+        },
+      },
+    });
 
+    if (!response) return false;
     return true;
   }
 
@@ -80,6 +124,16 @@ class Bebida {
     return response;
   }
 
+  async getBebidaTypeByName(name: string) {
+    const response = await db.drink_type.findMany({
+      where: {
+        name,
+      },
+    });
+
+    if (!response) return false;
+    return response[0];
+  }
   async updateBebidaTypes(data: drink_type, id: number) {
     const response = await db.drink_type.update({
       where: {
