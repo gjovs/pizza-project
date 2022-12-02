@@ -2,8 +2,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import Bebida from "../models/Bebida";
 
 class DrinkController {
-
-    // TODO finishing this controller and the drink type controller!
+  // TODO finishing this controller and the drink type controller!
   async index(req: FastifyRequest, rep: FastifyReply) {
     const response = await Bebida.index();
 
@@ -41,12 +40,9 @@ class DrinkController {
   }
 
   async delete(req: FastifyRequest, rep: FastifyReply) {
-    const { id } = req.params
-    
+    const { id } = req.params;
   }
-  async update(req: FastifyRequest, rep: FastifyReply) {
-    
-  }
+  async update(req: FastifyRequest, rep: FastifyReply) {}
   async activate(req: FastifyRequest, rep: FastifyReply) {}
 }
 
