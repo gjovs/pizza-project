@@ -6,18 +6,6 @@ import {
 } from "./ingredient.schema";
 
 export default async function ingredientRoutes(server: FastifyInstance) {
-  // JWT VALIDATION
-  server.decorate(
-    "authenticate",
-    async (req: FastifyRequest, rep: FastifyReply) => {
-      try {
-        await req.jwtVerify();
-      } catch (error) {
-        rep.send(error);
-      }
-    }
-  );
-
   server.post(
     "/",
     { onRequest: [server.authenticate], schema: createIngredientOptions },

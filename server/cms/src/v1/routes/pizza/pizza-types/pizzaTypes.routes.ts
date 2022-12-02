@@ -6,17 +6,6 @@ import {
 } from "./schema.pizzaTypes";
 
 export default async function pizzaTypesRoutes(server: FastifyInstance) {
-  // JWT VALIDATION
-  server.decorate(
-    "authenticate",
-    async (req: FastifyRequest, rep: FastifyReply) => {
-      try {
-        await req.jwtVerify();
-      } catch (error) {
-        rep.send(error);
-      }
-    }
-  );
   server.post(
     "/",
     {

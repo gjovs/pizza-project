@@ -1,14 +1,15 @@
 import cors from "@fastify/cors";
-import Fastify, { FastifyInstance } from "fastify";
+import Fastify, { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import multipart from "@fastify/multipart";
 import jwt from "@fastify/jwt";
 
 import { userRoutes } from "./routes";
 import pizzaRoutes from "./routes/pizza/pizza.routes";
-import pizzaTypesRoutes from "./routes/pizza/types/pizzaTypes.routes";
+import pizzaTypesRoutes from "./routes/pizza/pizza-types/pizzaTypes.routes";
 import stuffingRoutes from "./routes/stuffing/stuffing.routes";
 import ingredientRoutes from "./routes/ingredient/ingredient.routes";
 import drinkRoutes from "./routes/drink/drink.routes";
+import drinkTypesRoutes from "./routes/drink/drink-types/drinkTypes.routes";
 
 export default class Server {
   private static _instance: Server | null;
@@ -21,12 +22,27 @@ export default class Server {
     });
 
     this.middlewares();
+    this.decorators();
     this.routes();
   }
   private async middlewares() {
     this.server.register(jwt, { secret: "mysecret" });
     this.server.register(multipart, { attachFieldsToBody: true });
     await this.server.register(cors, { origin: true });
+  }
+
+  private decorators() {
+    // Decorate request with a 'user' property
+    this.server.decorate(
+      "authenticate",
+      async (req: FastifyRequest, rep: FastifyReply) => {
+        try {
+          await req.jwtVerify();
+        } catch (error) {
+          rep.send(error);
+        }
+      }
+    );
   }
 
   private routes() {
@@ -36,6 +52,7 @@ export default class Server {
     this.server.register(stuffingRoutes, { prefix: "/stuffing" });
     this.server.register(ingredientRoutes, { prefix: "/ingredient" });
     this.server.register(drinkRoutes, { prefix: "/drink" });
+    this.server.register(drinkTypesRoutes, { prefix: "/drink/types" });
   }
 
   static get Instance(): Server {

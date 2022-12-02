@@ -1,3 +1,36 @@
+const Drink = {
+  type: "object",
+  properties: {
+    id: { type: "number" },
+    volume: { type: "number" },
+    product: {
+      type: "object",
+      properties: {
+        id: { type: "int" },
+        name: { type: "string" },
+        price: { type: "number" },
+        likes: { type: "number" },
+        created_by: { type: "number" },
+        status: { type: "boolean" },
+        tbl_product_pictures: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              picture_id: { type: "int" },
+            },
+          },
+        },
+      },
+    },
+    drink_type: {
+      id: { type: "number" },
+      name: { type: "string" },
+      status: { type: "boolean" },
+    },
+  },
+};
+
 const createDrinkOptions = {
   body: {
     type: "object",
@@ -46,24 +79,25 @@ const createDrinkOptions = {
       },
     },
   },
-  // response: {
-  //   200: {
-  //     type: "object",
-  //     properties: {
-  //       statusCode: {
-  //         type: "number",
-  //       },
-  //       payload: {
-  //         type: "array",
-  //         items: {
-  //           ,
-  //         },
-  //       },
-  //       error: {
-  //         type: "boolean",
-  //       },
-  //     },
-  //   },
+  response: {
+    200: {
+      type: "object",
+      properties: {
+        code: {
+          type: "number",
+        },
+        payload: {
+          type: "array",
+          items: {
+            Drink,
+          },
+        },
+        error: {
+          type: "boolean",
+        },
+      },
+    },
+  },
 };
 
 export { createDrinkOptions };

@@ -1,20 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import PizzaController from "../../controllers/PizzaController";
-import { createPizzaOptions, updatePizzaOptions } from "./schema.pizza";
+import { createPizzaOptions, updatePizzaOptions } from "./pizza.schema";
 
 export default async function pizzaRoutes(server: FastifyInstance) {
-  // JWT VALIDATION
-  server.decorate(
-    "authenticate",
-    async (req: FastifyRequest, rep: FastifyReply) => {
-      try {
-        await req.jwtVerify();
-      } catch (error) {
-        rep.send(error);
-      }
-    }
-  );
-
   server.get(
     "/count",
     { onRequest: [server.authenticate] },

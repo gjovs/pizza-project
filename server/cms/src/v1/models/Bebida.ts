@@ -10,6 +10,17 @@ class Bebida {
         product_id: data.product_id,
         drink_type_id: data.drink_type_id,
       },
+      select: {
+        product: {
+          include: {
+            tbl_product_pictures: true
+          }
+        },
+        drink_type: true,
+        volume: true,
+        id: true,
+      
+      }
     });
 
     return response;
@@ -134,13 +145,24 @@ class Bebida {
     if (!response) return false;
     return response[0];
   }
-  async updateBebidaTypes(data: drink_type, id: number) {
-    const response = await db.drink_type.update({
+  async getBebidaTypeById(id: number) {
+    const response = await db.drink_type.findUnique({
       where: {
         id,
       },
+    });
+
+    if (!response) return false;
+    return response;
+  }
+  async updateBebidaTypes(data: drink_type) {
+    const response = await db.drink_type.update({
+      where: {
+        id: data.id,
+      },
       data: {
         name: data.name,
+        status: data.status,
       },
     });
 

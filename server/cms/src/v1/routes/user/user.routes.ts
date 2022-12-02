@@ -4,18 +4,6 @@ import User from "../../models/User";
 import { createUserOptions, loginOptions } from "./user.schema";
 
 export default async function userRoutes(server: FastifyInstance) {
-  // JWT VALIDATION
-  server.decorate(
-    "authenticate",
-    async (req: FastifyRequest, rep: FastifyReply) => {
-      try {
-        await req.jwtVerify();
-      } catch (error) {
-        rep.send(error);
-      }
-    }
-  );
-
   server.get(
     "/count",
     { onRequest: [server.authenticate] },
