@@ -1,15 +1,21 @@
 import cors from "@fastify/cors";
-import Fastify, { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import Fastify, {
+  FastifyInstance,
+  FastifyRequest,
+  FastifyReply,
+} from "fastify";
 import multipart from "@fastify/multipart";
 import jwt from "@fastify/jwt";
 
-import { userRoutes } from "./routes";
-import pizzaRoutes from "./routes/pizza/pizza.routes";
-import pizzaTypesRoutes from "./routes/pizza/pizza-types/pizzaTypes.routes";
-import stuffingRoutes from "./routes/stuffing/stuffing.routes";
-import ingredientRoutes from "./routes/ingredient/ingredient.routes";
-import drinkRoutes from "./routes/drink/drink.routes";
-import drinkTypesRoutes from "./routes/drink/drink-types/drinkTypes.routes";
+import {
+  userRoutes,
+  pizzaRoutes,
+  pizzaTypesRoutes,
+  ingredientRoutes,
+  drinkRoutes,
+  drinkTypesRoutes,
+  stuffingRoutes,
+} from "./routes";
 
 export default class Server {
   private static _instance: Server | null;

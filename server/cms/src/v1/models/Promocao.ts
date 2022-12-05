@@ -64,7 +64,12 @@ class Promocao {
       },
     });
 
-    return response;
+    const promotions = response.filter((item) => {
+      if ((item.product?.pizza.length as number) > 0) return true;
+      return false;
+    });
+
+    return promotions;
   }
 
   async getSaleOfDrinks() {
@@ -77,8 +82,13 @@ class Promocao {
         },
       },
     });
+    
+    const promotions = response.filter((item) => {
+      if ((item.product?.drink.length as number) > 0) return true;
+      return false;
+    });
 
-    return response;
+    return promotions;
   }
 }
 

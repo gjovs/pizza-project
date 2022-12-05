@@ -5,9 +5,11 @@
   "main": "server.js",
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "dev": "tsx watch ./bin/www/server.ts",
+    "dev": "tsx watch ./src/www/server.ts",
+    "start": "nodemon ./bin/www/server.js",
     "seed": "tsx prisma/seed.ts",
-    "testModels": "tsx ./src/v1/models/test/index.test.ts"
+    "testModels": "tsx ./src/v1/models/test/index.test.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "@fastify/cors": "^8.2.0",
@@ -23,6 +25,7 @@
     "firebase": "^9.14.0",
     "firebase-admin": "^11.2.1",
     "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.20",
     "sucrase": "^3.28.0",
     "zod": "^3.19.1"
   },

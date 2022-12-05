@@ -16,6 +16,8 @@ class Bebida {
             tbl_product_pictures: true
           }
         },
+        product_id: true,
+        drink_type_id: true,
         drink_type: true,
         volume: true,
         id: true,

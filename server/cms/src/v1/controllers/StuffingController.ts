@@ -3,7 +3,14 @@ import { execPath } from "process";
 import PizzaRecheio from "../models/PizzaRecheio";
 
 class StuffingController {
-  async save(req: FastifyRequest, rep: FastifyReply) {
+  async save(
+    req: FastifyRequest<{
+      Body: {
+        name: string;
+      };
+    }>,
+    rep: FastifyReply
+  ) {
     const { name } = req.body;
 
     const response = await PizzaRecheio.save({
@@ -28,7 +35,14 @@ class StuffingController {
     });
   }
 
-  async show(req: FastifyRequest, rep: FastifyReply) {
+  async show(
+    req: FastifyRequest<{
+      Params: {
+        id: string;
+      };
+    }>,
+    rep: FastifyReply
+  ) {
     const { id } = req.params;
 
     const response = await PizzaRecheio.show(parseInt(id));
@@ -48,7 +62,14 @@ class StuffingController {
     });
   }
 
-  async delete(req: FastifyRequest, rep: FastifyReply) {
+  async delete(
+    req: FastifyRequest<{
+      Params: {
+        id: string;
+      };
+    }>,
+    rep: FastifyReply
+  ) {
     const { id } = req.params;
 
     const response = await PizzaRecheio.delete(parseInt(id));
@@ -68,7 +89,14 @@ class StuffingController {
     });
   }
 
-  async activate(req: FastifyRequest, rep: FastifyReply) {
+  async activate(
+    req: FastifyRequest<{
+      Params: {
+        id: string;
+      };
+    }>,
+    rep: FastifyReply
+  ) {
     const { id } = req.params;
 
     const response = await PizzaRecheio.activate(parseInt(id));
@@ -87,7 +115,17 @@ class StuffingController {
       message: ["Succefull Activated!"],
     });
   }
-  async update(req: FastifyRequest, rep: FastifyReply) {
+  async update(
+    req: FastifyRequest<{
+      Params: {
+        id: string;
+      };
+      Body: {
+        name: string;
+      };
+    }>,
+    rep: FastifyReply
+  ) {
     const { id } = req.params;
 
     const { name } = req.body;

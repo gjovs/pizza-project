@@ -31,7 +31,7 @@ class PizzaController {
     const { picture, stuffing, price, saleOffValue, type, ingredient } = body;
 
     const ingredients: any[] = [];
-    ingredient.forEach((e) => {
+    ingredient.forEach((e: { value: any }) => {
       ingredients.push(e.value);
     });
 
@@ -191,7 +191,7 @@ class PizzaController {
   ) {
     const { id } = req.params;
     const res = await Pizza.activate(parseInt(id));
-    
+
     if (!res) {
       return rep.status(404).send({
         error: true,
@@ -203,8 +203,8 @@ class PizzaController {
     return rep.send({
       code: 200,
       error: false,
-      message: ["Sucefull activate!"]
-    })
+      message: ["Sucefull activate!"],
+    });
   }
 
   async show(
@@ -251,7 +251,7 @@ class PizzaController {
 
     if (ingredient.length > 0) {
       const ingredients: any[] = [];
-      ingredient.forEach((e) => {
+      ingredient.forEach((e: { value: any }) => {
         ingredients.push(e.value);
       });
 

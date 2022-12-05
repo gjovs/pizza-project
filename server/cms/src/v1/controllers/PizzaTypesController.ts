@@ -2,7 +2,15 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import Pizza from "../models/Pizza";
 
 class PizzaTypesController {
-  async save(req: FastifyRequest, rep: FastifyReply) {
+  async save(
+    req: FastifyRequest<{
+      Body: {
+        name: string;
+        dimensions: string;
+      };
+    }>,
+    rep: FastifyReply
+  ) {
     const { name, dimensions } = req.body;
 
     const response = await Pizza.savePizzaTypes({
@@ -21,7 +29,11 @@ class PizzaTypesController {
   async index(req: FastifyRequest, rep: FastifyReply) {
     const response = await Pizza.getPizzaTypes();
 
-    return response;
+    return rep.send({
+      code: 200,
+      error: false,
+      payload: response,
+    });
   }
   async delete(
     req: FastifyRequest<{

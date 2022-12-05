@@ -1,15 +1,44 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { FastifyInstance } from "fastify";
 
 import StuffingController from "../../controllers/StuffingController";
 
+import {
+  createStuffingOptions,
+  updateStuffingOptions,
+} from "./stuffing.schema";
+
 export default async function stuffingRoutes(server: FastifyInstance) {
-  server.post("/", StuffingController.save)
-  server.get("/", StuffingController.index);
-  server.get("/:id", StuffingController.show);
+  server.post(
+    "/",
+    { onRequest: [server.authenticate], schema: createStuffingOptions },
+    StuffingController.save
+  );
+  server.get(
+    "/",
+    { onRequest: [server.authenticate] },
+    StuffingController.index
+  );
+  server.get(
+    "/:id",
+    { onRequest: [server.authenticate] },
+    StuffingController.show
+  );
 
-  server.delete("/:id", StuffingController.delete);
+  server.delete(
+    "/:id",
+    { onRequest: [server.authenticate] },
+    StuffingController.delete
+  );
 
-  server.put("/activate/:id", StuffingController.activate);
+  server.put(
+    "/activate/:id",
+    { onRequest: [server.authenticate] },
+    StuffingController.activate
+  );
 
-  server.put("/:id", StuffingController.update);
+  server.put(
+    "/:id",
+    { onRequest: [server.authenticate], schema: updateStuffingOptions },
+    StuffingController.update
+  );
 }

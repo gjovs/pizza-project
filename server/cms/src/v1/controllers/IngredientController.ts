@@ -2,7 +2,14 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import Ingredient from "../models/Ingredient";
 
 class IngredientController {
-  async save(req: FastifyRequest, rep: FastifyReply) {
+  async save(
+    req: FastifyRequest<{
+      Body: {
+        name: string;
+      };
+    }>,
+    rep: FastifyReply
+  ) {
     const { name } = req.body;
 
     const response = await Ingredient.save({
@@ -80,7 +87,17 @@ class IngredientController {
     });
   }
 
-  async update(req: FastifyRequest, rep: FastifyReply) {
+  async update(
+    req: FastifyRequest<{
+      Params: {
+        id: string;
+      };
+      Body: {
+        name: string;
+      };
+    }>,
+    rep: FastifyReply
+  ) {
     const { id } = req.params;
     const { name } = req.body;
 

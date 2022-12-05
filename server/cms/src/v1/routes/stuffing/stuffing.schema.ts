@@ -70,4 +70,4 @@ const updateStuffingOptions = {
   },
 };
 
-export { updatePizzaTypeOptions, createPizzaTypeOptions };
+export { createStuffingOptions, updateStuffingOptions };
