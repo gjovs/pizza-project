@@ -65,3 +65,5 @@ export default class Server {
     return this._instance || (this._instance = new this());
   }
 }
+
+

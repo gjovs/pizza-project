@@ -9,9 +9,12 @@
     "start": "nodemon ./bin/www/server.js",
     "seed": "tsx prisma/seed.ts",
     "testModels": "tsx ./src/v1/models/test/index.test.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "startNetlify": "./node_modules/.bin/netlify-lambda serve ./api/",
+    "buildNetlify": "./node_modules/.bin/netlify-lambda build ./api/"
   },
   "dependencies": {
+    "@fastify/aws-lambda": "^3.1.3",
     "@fastify/cors": "^8.2.0",
     "@fastify/jwt": "^6.4.0",
     "@fastify/multipart": "^7.3.0",
