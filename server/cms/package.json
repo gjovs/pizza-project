@@ -11,7 +11,6 @@
     "build": "tsc",
     "build::netlify": "npx netlify-lambda build functions --config ./webpack.config.netlify.js",
     "start::netlify": "npx netlify-lambda serve functions --config ./webpack.config.netlify.js"
-
   },
   "dependencies": {
     "@fastify/aws-lambda": "^3.1.3",
