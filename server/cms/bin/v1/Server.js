@@ -29,7 +29,7 @@ class Server {
                 await req.jwtVerify();
             }
             catch (error) {
-                rep.send(error);
+                return rep.send(error);
             }
         });
     }

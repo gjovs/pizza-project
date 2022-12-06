@@ -55,7 +55,12 @@ class Promocao {
                 },
             },
         });
-        return response;
+        const promotions = response.filter((item) => {
+            if (item.product?.pizza.length > 0)
+                return true;
+            return false;
+        });
+        return promotions;
     }
     async getSaleOfDrinks() {
         const response = await database_1.db.sale_off_products.findMany({
@@ -67,7 +72,12 @@ class Promocao {
                 },
             },
         });
-        return response;
+        const promotions = response.filter((item) => {
+            if (item.product?.drink.length > 0)
+                return true;
+            return false;
+        });
+        return promotions;
     }
 }
 exports.default = new Promocao();
