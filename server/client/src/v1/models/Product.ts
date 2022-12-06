@@ -15,7 +15,7 @@ class Product {
   }
   async likeAProduct(id: number) {
     try {
-      const response = await db.tbl_product.update({
+      await db.tbl_product.update({
         data: {
           likes: { increment: 1 },
         },
@@ -23,7 +23,22 @@ class Product {
           id,
         },
       });
-      return response;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  async deslikeAProduct(id: number) {
+    try {
+      await db.tbl_product.update({
+        data: {
+          likes: { decrement: 1 },
+        },
+        where: {
+          id,
+        },
+      });
+      return true;
     } catch (e) {
       return false;
     }
@@ -150,6 +165,91 @@ class Product {
     });
 
     return response;
+  }
+
+
+  async getLowPrice() {
+    const response = await db.tbl_product.findMany({
+      include: {
+        tbl_drink: {
+          include: {
+            tbl_drink_type: true,
+          },
+        },
+        tbl_pizza: {
+          include: {
+            tbl_pizza_ingredient: true,
+            tbl_pizza_stuffing: true,
+            tbl_pizza_type: true,
+          },
+        },
+      },
+      where: {
+        status: true,
+      },
+      orderBy: {
+        price: "asc"
+      }
+    });
+
+    const sanitzedResponse: unknown[] = [];
+    type itemMirror = { tbl_drink?: object; tbl_pizza?: object };
+
+    response.forEach((item) => {
+      if (item.tbl_drink.length <= 0) {
+        const newItem: itemMirror = item;
+        delete newItem.tbl_drink;
+        sanitzedResponse.push(newItem);
+      } else {
+        const newItem: itemMirror = item;
+        delete newItem.tbl_pizza;
+        sanitzedResponse.push(newItem);
+      }
+    });
+
+    return sanitzedResponse;
+  }
+
+  async getHighPrice() {
+    const response = await db.tbl_product.findMany({
+      include: {
+        tbl_drink: {
+          include: {
+            tbl_drink_type: true,
+          },
+        },
+        tbl_pizza: {
+          include: {
+            tbl_pizza_ingredient: true,
+            tbl_pizza_stuffing: true,
+            tbl_pizza_type: true,
+          },
+        },
+      },
+      where: {
+        status: true,
+      },
+      orderBy: {
+        price: "desc"
+      }
+    });
+
+    const sanitzedResponse: unknown[] = [];
+    type itemMirror = { tbl_drink?: object; tbl_pizza?: object };
+
+    response.forEach((item) => {
+      if (item.tbl_drink.length <= 0) {
+        const newItem: itemMirror = item;
+        delete newItem.tbl_drink;
+        sanitzedResponse.push(newItem);
+      } else {
+        const newItem: itemMirror = item;
+        delete newItem.tbl_pizza;
+        sanitzedResponse.push(newItem);
+      }
+    });
+
+    return sanitzedResponse;
   }
 }
 
