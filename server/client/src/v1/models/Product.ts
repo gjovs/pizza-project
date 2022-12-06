@@ -1,6 +1,33 @@
 import { db } from "../config/database";
 
 class Product {
+  async show(id: number) {
+    try {
+      const response = await db.tbl_product.findUnique({
+        where: {
+          id
+        }
+      })
+      return response
+    } catch (error) {
+      return false
+    }
+  }
+  async likeAProduct(id: number) {
+    try {
+      const response = await db.tbl_product.update({
+        data: {
+          likes: { increment: 1 },
+        },
+        where: {
+          id,
+        },
+      });
+      return response;
+    } catch (e) {
+      return false;
+    }
+  }
   async getByMostLiked() {
     const response = await db.tbl_product.findMany({
       include: {
