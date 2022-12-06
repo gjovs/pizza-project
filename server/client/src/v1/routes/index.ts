@@ -1,3 +1,5 @@
 import productRoutes from "./productRoutes";
+import messageRoutes from "./messageRoutes";
+import typesRoutes from "./typesRoutes";
 
-export { productRoutes };
+export { productRoutes, messageRoutes, typesRoutes };

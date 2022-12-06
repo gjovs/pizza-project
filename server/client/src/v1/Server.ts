@@ -1,7 +1,6 @@
 import cors from "@fastify/cors";
 import Fastify, { FastifyInstance } from "fastify";
-import { productRoutes } from "./routes";
-import messageRoutes from "./routes/messageRoutes";
+import { productRoutes, messageRoutes, typesRoutes } from "./routes";
 
 export default class Server {
   private static _instance: Server | null;
@@ -23,7 +22,7 @@ export default class Server {
   private routes() {
     this.server.register(productRoutes, { prefix: "/product" });
     this.server.register(messageRoutes, { prefix: "/message"})
-    // TODO make the types pizza and drink routes (pizza, type and stuffing and ingredient filters)
+    this.server.register(typesRoutes, { prefix: "/types"})
   }
 
   static get Instance(): Server {
