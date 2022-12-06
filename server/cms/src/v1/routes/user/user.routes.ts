@@ -2,6 +2,8 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { UserController } from "../../controllers/";
 import User from "../../models/User";
 import { createUserOptions, loginOptions } from "./user.schema";
+import bcryptjs from 'bcryptjs';
+
 
 export default async function userRoutes(server: FastifyInstance) {
   server.get(
@@ -33,6 +35,7 @@ export default async function userRoutes(server: FastifyInstance) {
 
       const user = await User.getUserByEmail(email);
 
+        
       if (user.length <= 0) {
         return rep.status(404).send({
           code: 404,
@@ -42,7 +45,9 @@ export default async function userRoutes(server: FastifyInstance) {
       }
 
       // check password is the same
-      if (!(user[0].password === password)) {
+      const isValidPassword = await bcryptjs.compare(password, user[0].password)
+
+      if (!isValidPassword) {
         return rep.status(401).send({
           error: true,
           code: 401,

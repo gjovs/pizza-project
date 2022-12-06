@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { FirebaseService } from "../services";
+import bcryptjs from 'bcryptjs';
 import User from "../models/User";
 
 class UserController {
@@ -22,12 +23,14 @@ class UserController {
 
     const url = await FirebaseService.uploadImage(profile_picture);
 
+    const hashPassword = await bcryptjs.hash(password.value, 8);
+
     const data = {
       id: -1,
       profile_picture: url,
       name: name.value,
       email: email.value,
-      password: password.value,
+      password: hashPassword,
       cellphone: cellphone.value.toString(),
       isAdmin: false,
     };
@@ -86,12 +89,14 @@ class UserController {
 
     const url = await FirebaseService.uploadImage(profile_picture);
 
+    const hashPassword = await bcryptjs.hash(password.value, 8);
+
     const data = {
       id: parseInt(id),
       profile_picture: url,
       name: name.value,
       email: email.value,
-      password: password.value,
+      password: hashPassword,
       cellphone: cellphone.value.toString(),
       isAdmin: false,
     };
