@@ -20,9 +20,9 @@ export default class Server {
   }
 
   private routes() {
-    this.server.register(productRoutes, { prefix: "/product" });
-    this.server.register(messageRoutes, { prefix: "/message"})
-    this.server.register(typesRoutes, { prefix: "/types"})
+    this.server.register(productRoutes, { prefix: "/.netlify/functions/server/product" });
+    this.server.register(messageRoutes, { prefix: "/.netlify/functions/server/message"})
+    this.server.register(typesRoutes, { prefix: "/.netlify/functions/server/types"})
   }
 
   static get Instance(): Server {
