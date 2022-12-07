@@ -99,6 +99,12 @@ class Product {
             tbl_pizza_type: true,
           },
         },
+
+        tbl_product_pictures: { 
+          include: {
+            tbl_picture: true
+          }
+        }
       },
       where: {
         status: true,
