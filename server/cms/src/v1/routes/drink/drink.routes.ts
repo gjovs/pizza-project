@@ -1,8 +1,14 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { FastifyInstance } from "fastify";
 import DrinkController from "../../controllers/DrinkController";
 import { createDrinkOptions } from "./drink.schema";
 
 export default async function drinkRoutes(server: FastifyInstance) {
+  server.get(
+    "/count",
+    { onRequest: [server.authenticate] },
+    DrinkController.count
+  );
+
   server.get("/", { onRequest: [server.authenticate] }, DrinkController.index);
   server.post(
     "/",

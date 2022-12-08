@@ -15,6 +15,7 @@ import {
   drinkRoutes,
   drinkTypesRoutes,
   stuffingRoutes,
+  countRoutes,
 } from "./routes";
 
 export default class Server {
@@ -52,17 +53,33 @@ export default class Server {
   }
 
   private routes() {
-    this.server.register(userRoutes, { prefix: "/.netlify/functions/server/user" });
-    this.server.register(pizzaRoutes, { prefix: "/.netlify/functions/server/pizza" });
-    this.server.register(pizzaTypesRoutes, { prefix: "/.netlify/functions/server/pizza/types" });
-    this.server.register(stuffingRoutes, { prefix: "/.netlify/functions/server/stuffing" });
-    this.server.register(ingredientRoutes, { prefix: "/.netlify/functions/server/ingredient" });
-    this.server.register(drinkRoutes, { prefix: "/.netlify/functions/server/drink" });
-    this.server.register(drinkTypesRoutes, { prefix: "/.netlify/functions/server/drink/types" });
+    this.server.register(userRoutes, {
+      prefix: "/.netlify/functions/server/user",
+    });
+    this.server.register(pizzaRoutes, {
+      prefix: "/.netlify/functions/server/pizza",
+    });
+    this.server.register(pizzaTypesRoutes, {
+      prefix: "/.netlify/functions/server/pizza/types",
+    });
+    this.server.register(stuffingRoutes, {
+      prefix: "/.netlify/functions/server/stuffing",
+    });
+    this.server.register(ingredientRoutes, {
+      prefix: "/.netlify/functions/server/ingredient",
+    });
+    this.server.register(drinkRoutes, {
+      prefix: "/.netlify/functions/server/drink",
+    });
+    this.server.register(drinkTypesRoutes, {
+      prefix: "/.netlify/functions/server/drink/types",
+    });
+    this.server.register(countRoutes, {
+      prefix: "/.netlify/functions/server/counter",
+    });
   }
 
   static get Instance(): Server {
     return this._instance || (this._instance = new this());
   }
 }
-

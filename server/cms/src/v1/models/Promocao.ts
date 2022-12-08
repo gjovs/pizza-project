@@ -1,6 +1,10 @@
 import { sale_off_products } from "@prisma/client";
 import { db } from "../configs/database";
 class Promocao {
+  async count() {
+    const res = await db.sale_off_products.count();
+    return res;
+  }
   async index() {
     const response = await db.sale_off_products.findMany();
 
@@ -82,7 +86,7 @@ class Promocao {
         },
       },
     });
-    
+
     const promotions = response.filter((item) => {
       if ((item.product?.drink.length as number) > 0) return true;
       return false;

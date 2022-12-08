@@ -3,6 +3,10 @@ import { db } from "../configs/database";
 import { product } from "@prisma/client";
 
 class Product {
+  async count() {
+    const res = await db.user.count();
+    return res;
+  }
   async save(data: product): Promise<number> {
     const { id } = await db.product.create({
       data: {

@@ -3,6 +3,10 @@ import { db } from "../configs/database";
 import Product from "./Product";
 
 class Bebida {
+  async count() {
+    const res = await db.drink.count();
+    return res;
+  }
   async save(data: drink) {
     const response = await db.drink.create({
       data: {

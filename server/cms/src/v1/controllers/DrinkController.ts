@@ -6,6 +6,14 @@ import Promocao from "../models/Promocao";
 import { FirebaseService } from "../services";
 
 class DrinkController {
+  async count(req: FastifyRequest, rep: FastifyReply) {
+    const count = await Bebida.count();
+    return rep.send({
+      error: false,
+      code: 200,
+      count: count,
+    });
+  }
   async index(req: FastifyRequest, rep: FastifyReply) {
     const response = await Bebida.index();
 
@@ -168,7 +176,7 @@ class DrinkController {
     rep: FastifyReply
   ) {
     const { id } = req.params;
-    
+
     // @ts-ignore
     const { picture, volume, type, saleOffValue, price, name } = req.body;
 
