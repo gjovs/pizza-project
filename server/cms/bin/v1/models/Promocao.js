@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = require("../configs/database");
 class Promocao {
+    async count() {
+        const res = await database_1.db.sale_off_products.count();
+        return res;
+    }
     async index() {
         const response = await database_1.db.sale_off_products.findMany();
         return response;

@@ -16,6 +16,7 @@ import {
   drinkTypesRoutes,
   stuffingRoutes,
   countRoutes,
+  categoryRoutes,
 } from "./routes";
 
 export default class Server {
@@ -76,6 +77,9 @@ export default class Server {
     });
     this.server.register(countRoutes, {
       prefix: "/.netlify/functions/server/counter",
+    });
+    this.server.register(categoryRoutes, {
+      prefix: "/.netlify/functions/server/category",
     });
   }
 

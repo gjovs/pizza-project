@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import Bebida from "../models/Bebida";
+import Categoria from "../models/Categoria";
 import Picture from "../models/Picture";
 import Product from "../models/Product";
 import Promocao from "../models/Promocao";
@@ -78,9 +79,18 @@ class DrinkController {
   }
   async save(req: FastifyRequest, rep: FastifyReply) {
     // @ts-ignore
-    const { picture, volume, type, saleOffValue, price, name } = req.body;
+    const { picture, volume, type, saleOffValue, price, name, categoria } =
+      req.body;
 
-    // TODO
+    const categoriaInDb = await Categoria.getByName(categoria.value);
+
+    if (!categoriaInDb) {
+      return rep.status(404).send({
+        code: 404,
+        error: true,
+        message: "Categoria nao encontrado! ",
+      });
+    }
 
     const userData = req.user.payload;
 
@@ -110,6 +120,7 @@ class DrinkController {
       name: name.value,
       price: price.value,
       status: true,
+      category_id: categoriaInDb.id as number,
     });
 
     // save picture in product
@@ -178,7 +189,8 @@ class DrinkController {
     const { id } = req.params;
 
     // @ts-ignore
-    const { picture, volume, type, saleOffValue, price, name } = req.body;
+    const { picture, volume, type, saleOffValue, price, name, categoria } =
+      req.body;
 
     const drink = await Bebida.show(parseInt(id));
 
@@ -199,6 +211,22 @@ class DrinkController {
       const pictureId = drink?.product?.tbl_product_pictures[0].picture?.id;
 
       await Picture.update({ id: pictureId as number, picture_link: url });
+    }
+    
+    let categoriaId = drink?.product?.category_id;
+    
+    if (categoria) {
+      const checkCategoria = await Categoria.getByName(categoria.value);
+
+      if (!checkCategoria) {
+        return rep.status(404).send({
+          code: 404,
+          error: true,
+          message: "Categoria nao encontrado! ",
+        });
+      }
+
+      categoriaId = checkCategoria.id;
     }
 
     if (type && volume) {
@@ -263,6 +291,7 @@ class DrinkController {
       name: name.value,
       price: price.value,
       status: true,
+      category_id: categoriaId as number,
     });
 
     return rep.send({

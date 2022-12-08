@@ -108,6 +108,8 @@ model product {
   likes                Int?
   created_by           Int
   status               Boolean?
+  category_id          Int?
+  tbl_category         tbl_category?          @relation("tbl_categoryTotbl_product", fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_category_product")
   user                 user                   @relation("tbl_productTotbl_user", fields: [created_by], references: [id], onUpdate: Restrict, map: "FK_user_product")
   drink                drink[]
   pizza                pizza[]                @relation("tbl_pizzaTotbl_product")
@@ -115,6 +117,7 @@ model product {
   sale_off_products    sale_off_products[]
 
   @@index([created_by], map: "FK_user_product")
+  @@index([category_id], map: "FK_category_product")
   @@map("tbl_product")
 }
 
@@ -166,4 +169,11 @@ model tbl_ingredient {
   id               Int                @id @unique(map: "id") @default(autoincrement())
   name             String             @db.VarChar(30)
   pizza_ingredient pizza_ingredient[] @relation("ingredientTopizza_ingredient")
+}
+
+model tbl_category {
+  id      Int       @id @unique(map: "id") @default(autoincrement())
+  name    String    @db.VarChar(120)
+  status  Boolean?
+  product product[] @relation("tbl_categoryTotbl_product")
 }

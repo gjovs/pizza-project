@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = require("../configs/database");
 class Product {
+    async count() {
+        const res = await database_1.db.user.count();
+        return res;
+    }
     async save(data) {
         const { id } = await database_1.db.product.create({
             data: {
@@ -9,6 +13,7 @@ class Product {
                 price: data.price,
                 created_by: data.created_by,
                 status: data.status,
+                category_id: data.category_id
             },
         });
         return id;

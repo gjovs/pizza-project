@@ -10,6 +10,7 @@ const PizzaRecheio_1 = __importDefault(require("../models/PizzaRecheio"));
 const Product_1 = __importDefault(require("../models/Product"));
 const Promocao_1 = __importDefault(require("../models/Promocao"));
 const services_1 = require("../services");
+const Categoria_1 = __importDefault(require("../models/Categoria"));
 class PizzaController {
     async count(req, rep) {
         const count = await Pizza_1.default.count();
@@ -23,7 +24,15 @@ class PizzaController {
         const { body } = req;
         const userData = req.user.payload;
         const userId = userData.id;
-        const { picture, stuffing, price, saleOffValue, type, ingredient } = body;
+        const { picture, stuffing, price, saleOffValue, type, ingredient, categoria, } = body;
+        const categoriaInDb = await Categoria_1.default.getByName(categoria.value);
+        if (!categoriaInDb) {
+            return rep.status(404).send({
+                code: 404,
+                error: true,
+                message: "Categoria nao encontrado! ",
+            });
+        }
         const ingredients = [];
         ingredient.forEach((e) => {
             ingredients.push(e.value);
@@ -71,6 +80,7 @@ class PizzaController {
             name,
             price: price.value,
             status: true,
+            category_id: categoriaInDb.id,
         });
         await Picture_1.default.addPictureInProduct({
             id: -1,
@@ -166,7 +176,7 @@ class PizzaController {
         });
     }
     async update(req, rep) {
-        const { picture, stuffing, price, saleOffValue, type, ingredient } = req.body;
+        const { picture, stuffing, price, saleOffValue, type, ingredient, categoria, } = req.body;
         const pizzaId = req.params.id;
         const pizza = await Pizza_1.default.show(parseInt(pizzaId));
         if (ingredient.length > 0) {
@@ -256,6 +266,18 @@ class PizzaController {
         else {
             newName = pizza?.pizza_stuffing[0].stuffing?.name + " " + type.value;
         }
+        let categoriaId = pizza?.product?.category_id;
+        if (categoria) {
+            const checkCategoria = await Categoria_1.default.getByName(categoria.value);
+            if (!checkCategoria) {
+                return rep.status(404).send({
+                    code: 404,
+                    error: true,
+                    message: "Categoria nao encontrado! ",
+                });
+            }
+            categoriaId = checkCategoria.id;
+        }
         await Product_1.default.update({
             id: pizza?.product_id,
             name: newName,
@@ -263,6 +285,7 @@ class PizzaController {
             created_by: pizza?.product?.created_by,
             likes: pizza?.product?.likes,
             status: pizza?.product?.status,
+            category_id: categoriaId,
         });
         if (saleOffValue) {
             await Promocao_1.default.update({

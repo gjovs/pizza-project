@@ -14,6 +14,7 @@ const Drink = {
                 price: { type: "number" },
                 likes: { type: "number" },
                 created_by: { type: "number" },
+                category_id: { type: "number" },
                 status: { type: "boolean" },
                 tbl_product_pictures: {
                     type: "array",
@@ -72,6 +73,14 @@ const createDrinkOptions = {
                 },
             },
             type: {
+                type: "object",
+                properties: {
+                    value: {
+                        type: "string",
+                    },
+                },
+            },
+            categoria: {
                 type: "object",
                 properties: {
                     value: {

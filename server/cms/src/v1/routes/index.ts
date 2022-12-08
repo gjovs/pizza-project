@@ -6,6 +6,8 @@ import pizzaTypesRoutes from "./pizza/pizza-types/pizzaTypes.routes";
 import pizzaRoutes from "./pizza/pizza.routes";
 import stuffingRoutes from "./stuffing/stuffing.routes";
 import countRoutes from "./count/count.routes";
+import categoryRoutes from "./category/category.routes";
+
 export {
   countRoutes,
   userRoutes,
@@ -15,4 +17,5 @@ export {
   pizzaTypesRoutes,
   pizzaRoutes,
   stuffingRoutes,
+  categoryRoutes
 };

@@ -4,11 +4,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Bebida_1 = __importDefault(require("../models/Bebida"));
+const Categoria_1 = __importDefault(require("../models/Categoria"));
 const Picture_1 = __importDefault(require("../models/Picture"));
 const Product_1 = __importDefault(require("../models/Product"));
 const Promocao_1 = __importDefault(require("../models/Promocao"));
 const services_1 = require("../services");
 class DrinkController {
+    async count(req, rep) {
+        const count = await Bebida_1.default.count();
+        return rep.send({
+            error: false,
+            code: 200,
+            count: count,
+        });
+    }
     async index(req, rep) {
         const response = await Bebida_1.default.index();
         return rep.send({
@@ -50,7 +59,15 @@ class DrinkController {
         });
     }
     async save(req, rep) {
-        const { picture, volume, type, saleOffValue, price, name } = req.body;
+        const { picture, volume, type, saleOffValue, price, name, categoria } = req.body;
+        const categoriaInDb = await Categoria_1.default.getByName(categoria.value);
+        if (!categoriaInDb) {
+            return rep.status(404).send({
+                code: 404,
+                error: true,
+                message: "Categoria nao encontrado! ",
+            });
+        }
         const userData = req.user.payload;
         const userId = userData.id;
         await picture.toBuffer();
@@ -71,6 +88,7 @@ class DrinkController {
             name: name.value,
             price: price.value,
             status: true,
+            category_id: categoriaInDb.id,
         });
         await Picture_1.default.addPictureInProduct({
             id: -1,
@@ -114,7 +132,7 @@ class DrinkController {
     }
     async update(req, rep) {
         const { id } = req.params;
-        const { picture, volume, type, saleOffValue, price, name } = req.body;
+        const { picture, volume, type, saleOffValue, price, name, categoria } = req.body;
         const drink = await Bebida_1.default.show(parseInt(id));
         if (!drink) {
             return rep.status(404).send({
@@ -128,6 +146,18 @@ class DrinkController {
             const url = await services_1.FirebaseService.uploadImage(picture);
             const pictureId = drink?.product?.tbl_product_pictures[0].picture?.id;
             await Picture_1.default.update({ id: pictureId, picture_link: url });
+        }
+        let categoriaId = drink?.product?.category_id;
+        if (categoria) {
+            const checkCategoria = await Categoria_1.default.getByName(categoria.value);
+            if (!checkCategoria) {
+                return rep.status(404).send({
+                    code: 404,
+                    error: true,
+                    message: "Categoria nao encontrado! ",
+                });
+            }
+            categoriaId = checkCategoria.id;
         }
         if (type && volume) {
             const res = await Bebida_1.default.getBebidaTypeByName(type.value);
@@ -192,6 +222,7 @@ class DrinkController {
             name: name.value,
             price: price.value,
             status: true,
+            category_id: categoriaId,
         });
         return rep.send({
             code: 200,

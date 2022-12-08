@@ -14,6 +14,7 @@ class Product {
         price: data.price,
         created_by: data.created_by,
         status: data.status,
+        category_id: data.category_id
       },
     });
     return id;

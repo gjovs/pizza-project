@@ -9,6 +9,7 @@ import Promocao from "../models/Promocao";
 
 import { FirebaseService } from "../services";
 import { Decimal } from "@prisma/client/runtime";
+import Categoria from "../models/Categoria";
 
 class PizzaController {
   async count(req: FastifyRequest, rep: FastifyReply) {
@@ -28,7 +29,33 @@ class PizzaController {
     const userId = userData.id;
 
     // @ts-ignore
-    const { picture, stuffing, price, saleOffValue, type, ingredient } = body;
+    const {
+
+      // @ts-ignore
+      picture,
+      // @ts-ignore
+      stuffing,
+      // @ts-ignore
+      price,
+      // @ts-ignore
+      saleOffValue,
+      // @ts-ignore
+      type,
+      // @ts-ignore
+      ingredient,
+      // @ts-ignore
+      categoria,
+    } = body;
+
+    const categoriaInDb = await Categoria.getByName(categoria.value);
+
+    if (!categoriaInDb) {
+      return rep.status(404).send({
+        code: 404,
+        error: true,
+        message: "Categoria nao encontrado! ",
+      });
+    }
 
     const ingredients: any[] = [];
     ingredient.forEach((e: { value: any }) => {
@@ -91,6 +118,7 @@ class PizzaController {
       name,
       price: price.value,
       status: true,
+      category_id: categoriaInDb.id as number,
     });
 
     // save picture in product
@@ -243,8 +271,22 @@ class PizzaController {
     rep: FastifyReply
   ) {
     // @ts-ignore
-    const { picture, stuffing, price, saleOffValue, type, ingredient } =
-      req.body;
+    const {
+      // @ts-ignore
+      picture,
+      // @ts-ignore
+      stuffing,
+      // @ts-ignore
+      price,
+      // @ts-ignore
+      saleOffValue,
+      // @ts-ignore
+      type,
+      // @ts-ignore
+      ingredient,
+      // @ts-ignore
+      categoria,
+    } = req.body;
 
     const pizzaId = req.params.id;
     const pizza = await Pizza.show(parseInt(pizzaId));
@@ -361,6 +403,21 @@ class PizzaController {
       newName = pizza?.pizza_stuffing[0].stuffing?.name + " " + type.value;
     }
 
+    let categoriaId = pizza?.product?.category_id;
+    if (categoria) {
+      const checkCategoria = await Categoria.getByName(categoria.value);
+
+      if (!checkCategoria) {
+        return rep.status(404).send({
+          code: 404,
+          error: true,
+          message: "Categoria nao encontrado! ",
+        });
+      }
+
+      categoriaId = checkCategoria.id;
+    }
+
     await Product.update({
       id: pizza?.product_id as number,
       name: newName,
@@ -368,6 +425,7 @@ class PizzaController {
       created_by: pizza?.product?.created_by as number,
       likes: pizza?.product?.likes as number,
       status: pizza?.product?.status as boolean,
+      category_id: categoriaId as number,
     });
 
     if (saleOffValue) {

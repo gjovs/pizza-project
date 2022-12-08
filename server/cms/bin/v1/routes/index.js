@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stuffingRoutes = exports.pizzaRoutes = exports.pizzaTypesRoutes = exports.ingredientRoutes = exports.drinkRoutes = exports.drinkTypesRoutes = exports.userRoutes = void 0;
+exports.categoryRoutes = exports.stuffingRoutes = exports.pizzaRoutes = exports.pizzaTypesRoutes = exports.ingredientRoutes = exports.drinkRoutes = exports.drinkTypesRoutes = exports.userRoutes = exports.countRoutes = void 0;
 const user_routes_1 = __importDefault(require("./user/user.routes"));
 exports.userRoutes = user_routes_1.default;
 const drinkTypes_routes_1 = __importDefault(require("./drink/drink-types/drinkTypes.routes"));
@@ -18,3 +18,7 @@ const pizza_routes_1 = __importDefault(require("./pizza/pizza.routes"));
 exports.pizzaRoutes = pizza_routes_1.default;
 const stuffing_routes_1 = __importDefault(require("./stuffing/stuffing.routes"));
 exports.stuffingRoutes = stuffing_routes_1.default;
+const count_routes_1 = __importDefault(require("./count/count.routes"));
+exports.countRoutes = count_routes_1.default;
+const category_routes_1 = __importDefault(require("./category/category.routes"));
+exports.categoryRoutes = category_routes_1.default;

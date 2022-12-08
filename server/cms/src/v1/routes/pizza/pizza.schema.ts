@@ -11,6 +11,7 @@ const Pizza = {
         price: { type: "number" },
         likes: { type: "number" },
         created_by: { type: "number" },
+        category_id: { type: "number" },
         status: { type: "boolean" },
         tbl_product_pictures: {
           type: "array",
@@ -106,6 +107,14 @@ const createPizzaOptions = {
           },
         },
       },
+      categoria: {
+        type: "object",
+        properties: {
+          value: {
+            type: "string",
+          },
+        },
+      },
       saleOffValue: {
         type: "object",
         properties: {
@@ -145,77 +154,83 @@ const createPizzaOptions = {
   },
 };
 
-
-
 const updatePizzaOptions = {
-    body: {
-      type: "object",
-      properties: {
-        picture: { type: "object" },
-        price: {
-          type: "object",
-          properties: {
-            value: {
-              type: "number",
-            },
-          },
-        },
-        ingredient: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              value: {
-                type: "string",
-              },
-            },
-          },
-        },
-        stuffing: {
-          type: "object",
-          properties: {
-            value: {
-              type: "string",
-            },
-          },
-        },
-        saleOffValue: {
-          type: "object",
-          properties: {
-            value: {
-              type: "number",
-            },
-          },
-        },
-        type: {
-          type: "object",
-          properties: {
-            value: {
-              type: "string",
-            },
-          },
-        },
-      },
-    },
-    response: {
-      200: {
+  body: {
+    type: "object",
+    properties: {
+      picture: { type: "object" },
+      price: {
         type: "object",
         properties: {
-          statusCode: {
+          value: {
             type: "number",
           },
-          payload: {
-            type: "array",
-            items: {
-              Pizza,
+        },
+      },
+      ingredient: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            value: {
+              type: "string",
             },
           },
-          error: {
-            type: "boolean",
+        },
+      },
+      categoria: {
+        type: "object",
+        properties: {
+          value: {
+            type: "string",
+          },
+        },
+      },
+      stuffing: {
+        type: "object",
+        properties: {
+          value: {
+            type: "string",
+          },
+        },
+      },
+      saleOffValue: {
+        type: "object",
+        properties: {
+          value: {
+            type: "number",
+          },
+        },
+      },
+      type: {
+        type: "object",
+        properties: {
+          value: {
+            type: "string",
           },
         },
       },
     },
-  };
+  },
+  response: {
+    200: {
+      type: "object",
+      properties: {
+        statusCode: {
+          type: "number",
+        },
+        payload: {
+          type: "array",
+          items: {
+            Pizza,
+          },
+        },
+        error: {
+          type: "boolean",
+        },
+      },
+    },
+  },
+};
 
 export { createPizzaOptions, updatePizzaOptions };

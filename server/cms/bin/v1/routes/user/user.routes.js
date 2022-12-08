@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const controllers_1 = require("../../controllers/");
 const User_1 = __importDefault(require("../../models/User"));
 const user_schema_1 = require("./user.schema");
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 async function userRoutes(server) {
     server.get("/count", { onRequest: [server.authenticate] }, controllers_1.UserController.count);
     server.post("/register", { schema: user_schema_1.createUserOptions, onRequest: [server.authenticate] }, controllers_1.UserController.save);
@@ -19,7 +20,8 @@ async function userRoutes(server) {
                 message: ["Email not founded"],
             });
         }
-        if (!(user[0].password === password)) {
+        const isValidPassword = await bcryptjs_1.default.compare(password, user[0].password);
+        if (!isValidPassword) {
             return rep.status(401).send({
                 error: true,
                 code: 401,

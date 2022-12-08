@@ -14,6 +14,7 @@ const Pizza = {
                 price: { type: "number" },
                 likes: { type: "number" },
                 created_by: { type: "number" },
+                category_id: { type: "number" },
                 status: { type: "boolean" },
                 tbl_product_pictures: {
                     type: "array",
@@ -108,6 +109,14 @@ const createPizzaOptions = {
                     },
                 },
             },
+            categoria: {
+                type: "object",
+                properties: {
+                    value: {
+                        type: "string",
+                    },
+                },
+            },
             saleOffValue: {
                 type: "object",
                 properties: {
@@ -168,6 +177,14 @@ const updatePizzaOptions = {
                         value: {
                             type: "string",
                         },
+                    },
+                },
+            },
+            categoria: {
+                type: "object",
+                properties: {
+                    value: {
+                        type: "string",
                     },
                 },
             },

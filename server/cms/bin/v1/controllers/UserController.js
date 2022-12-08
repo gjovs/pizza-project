@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const services_1 = require("../services");
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const User_1 = __importDefault(require("../models/User"));
 class UserController {
     async count(req, rep) {
@@ -19,12 +20,13 @@ class UserController {
         const { profile_picture, name, email, password, cellphone } = body;
         await profile_picture.toBuffer();
         const url = await services_1.FirebaseService.uploadImage(profile_picture);
+        const hashPassword = await bcryptjs_1.default.hash(password.value, 8);
         const data = {
             id: -1,
             profile_picture: url,
             name: name.value,
             email: email.value,
-            password: password.value,
+            password: hashPassword,
             cellphone: cellphone.value.toString(),
             isAdmin: false,
         };
@@ -57,12 +59,13 @@ class UserController {
         const { profile_picture, name, email, password, cellphone } = body;
         await profile_picture.toBuffer();
         const url = await services_1.FirebaseService.uploadImage(profile_picture);
+        const hashPassword = await bcryptjs_1.default.hash(password.value, 8);
         const data = {
             id: parseInt(id),
             profile_picture: url,
             name: name.value,
             email: email.value,
-            password: password.value,
+            password: hashPassword,
             cellphone: cellphone.value.toString(),
             isAdmin: false,
         };

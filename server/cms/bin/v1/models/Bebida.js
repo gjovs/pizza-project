@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = require("../configs/database");
 class Bebida {
+    async count() {
+        const res = await database_1.db.drink.count();
+        return res;
+    }
     async save(data) {
         const response = await database_1.db.drink.create({
             data: {
