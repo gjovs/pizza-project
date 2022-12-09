@@ -158,11 +158,6 @@ class Product {
           },
         },
       },
-      where: {
-        tbl_product: {
-          status: true,
-        },
-      },
     });
 
     const sanitzedResponse: unknown[] = [];

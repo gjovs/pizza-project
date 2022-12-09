@@ -1,4 +1,3 @@
-import { Resolver } from "dns";
 import { FastifyReply, FastifyRequest } from "fastify";
 import Product from "../models/Product";
 
