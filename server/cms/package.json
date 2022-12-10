@@ -10,7 +10,8 @@
     "seed": "tsx prisma/seed.ts",
     "build": "tsc",
     "build::netlify": "npx netlify-lambda build functions --config ./webpack.config.netlify.js",
-    "start::netlify": "npx netlify-lambda serve functions --config ./webpack.config.netlify.js"
+    "start::netlify": "npx netlify-lambda serve functions --config ./webpack.config.netlify.js",
+    "prisma::generate": "npx prisma generate"
   },
   "dependencies": {
     "@fastify/aws-lambda": "^3.1.3",
