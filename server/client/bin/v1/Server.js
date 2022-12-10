@@ -29,7 +29,7 @@ class Server {
             prefix: "/.netlify/functions/server/types",
         });
         this.server.register(routes_1.categoryRoutes, {
-            prefix: "./netlify/functions/server/category",
+            prefix: "/.netlify/functions/server/category",
         });
     }
     static get Instance() {
