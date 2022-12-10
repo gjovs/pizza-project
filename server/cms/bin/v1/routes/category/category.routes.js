@@ -11,5 +11,6 @@ async function categoryRoutes(server) {
     server.get("/:id", { onRequest: [server.authenticate] }, CategoriaController_1.default.show);
     server.delete("/:id", { onRequest: [server.authenticate] }, CategoriaController_1.default.delete);
     server.put("/:id", { onRequest: [server.authenticate], schema: category_schema_1.updateCategoryOptions }, CategoriaController_1.default.update);
+    server.put("/activate/:id", { onRequest: [server.authenticate] }, CategoriaController_1.default.activate);
 }
 exports.default = categoryRoutes;

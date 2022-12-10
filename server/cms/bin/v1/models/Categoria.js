@@ -6,6 +6,7 @@ class Categoria {
         const response = await database_1.db.tbl_category.create({
             data: {
                 name: data.name,
+                status: true,
             },
         });
         return response;
