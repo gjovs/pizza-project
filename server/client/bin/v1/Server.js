@@ -19,9 +19,18 @@ class Server {
         await this.server.register(cors_1.default, { origin: true });
     }
     routes() {
-        this.server.register(routes_1.productRoutes, { prefix: "/product" });
-        this.server.register(routes_1.messageRoutes, { prefix: "/message" });
-        this.server.register(routes_1.typesRoutes, { prefix: "/types" });
+        this.server.register(routes_1.productRoutes, {
+            prefix: "/.netlify/functions/server/product",
+        });
+        this.server.register(routes_1.messageRoutes, {
+            prefix: "/.netlify/functions/server/message",
+        });
+        this.server.register(routes_1.typesRoutes, {
+            prefix: "/.netlify/functions/server/types",
+        });
+        this.server.register(routes_1.categoryRoutes, {
+            prefix: "./netlify/functions/server/category",
+        });
     }
     static get Instance() {
         return this._instance || (this._instance = new this());

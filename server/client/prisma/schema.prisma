@@ -98,13 +98,16 @@ model tbl_product {
   likes                 Int?
   created_by            Int
   status                Boolean?
+  category_id           Int?
   tbl_drink             tbl_drink[]
   tbl_pizza             tbl_pizza[]
+  tbl_category          tbl_category?           @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "FK_category_product")
   tbl_user              tbl_user                @relation(fields: [created_by], references: [id], onUpdate: Restrict, map: "FK_user_product")
   tbl_product_pictures  tbl_product_pictures[]
   tbl_sale_off_products tbl_sale_off_products[]
 
   @@index([created_by], map: "FK_user_product")
+  @@index([category_id], map: "FK_category_product")
 }
 
 model tbl_product_pictures {
@@ -145,4 +148,11 @@ model tbl_user {
   tbl_product     tbl_product[]
 
   @@unique([email, id], map: "email")
+}
+
+model tbl_category {
+  id          Int           @id @unique(map: "id") @default(autoincrement())
+  name        String        @db.VarChar(120)
+  status      Boolean?
+  tbl_product tbl_product[]
 }

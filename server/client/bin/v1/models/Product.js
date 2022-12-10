@@ -95,11 +95,25 @@ class Product {
                 },
                 tbl_pizza: {
                     include: {
-                        tbl_pizza_ingredient: true,
+                        tbl_pizza_ingredient: {
+                            include: {
+                                tbl_ingredient: {
+                                    select: {
+                                        name: true,
+                                        id: true,
+                                    }
+                                }
+                            }
+                        },
                         tbl_pizza_stuffing: true,
                         tbl_pizza_type: true,
                     },
                 },
+                tbl_product_pictures: {
+                    include: {
+                        tbl_picture: true
+                    }
+                }
             },
             where: {
                 status: true,
@@ -138,11 +152,6 @@ class Product {
                             },
                         },
                     },
-                },
-            },
-            where: {
-                tbl_product: {
-                    status: true,
                 },
             },
         });
