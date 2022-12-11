@@ -179,6 +179,7 @@ class PizzaController {
         const { picture, stuffing, price, saleOffValue, type, ingredient, categoria, } = req.body;
         const pizzaId = req.params.id;
         const pizza = await Pizza_1.default.show(parseInt(pizzaId));
+        console.log(pizza);
         if (ingredient.length > 0) {
             const ingredients = [];
             ingredient.forEach((e) => {
@@ -288,11 +289,18 @@ class PizzaController {
             category_id: categoriaId,
         });
         if (saleOffValue) {
-            await Promocao_1.default.update({
-                id: pizza?.product?.sale_off_products[0].id,
-                off_value: saleOffValue.value,
-                product_id: pizza?.product_id,
-            });
+            if (pizza?.product?.sale_off_products[0] != undefined)
+                await Promocao_1.default.update({
+                    id: pizza?.product?.sale_off_products[0].id,
+                    off_value: saleOffValue.value,
+                    product_id: pizza?.product_id,
+                });
+            else
+                await Promocao_1.default.saveSaleOffProduct({
+                    id: -1,
+                    product_id: pizza?.product_id,
+                    off_value: saleOffValue.value,
+                });
         }
         return rep.send({
             code: 200,
