@@ -77,6 +77,7 @@ const createPizzaOptions = {
       "type",
       "picture",
       "ingredient",
+      "categoria",
     ],
     properties: {
       picture: { type: "object" },
