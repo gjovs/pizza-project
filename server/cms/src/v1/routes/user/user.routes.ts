@@ -80,4 +80,4 @@ export default async function userRoutes(server: FastifyInstance) {
     { onRequest: [server.authenticate] },
     UserController.update
   );
-}
+} 
