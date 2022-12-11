@@ -9,3 +9,7 @@ try {
 } catch (err) {
   console.log(err);
 }
+
+server.swagger();
+
+
