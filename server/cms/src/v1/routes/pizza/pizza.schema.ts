@@ -217,14 +217,11 @@ const updatePizzaOptions = {
     200: {
       type: "object",
       properties: {
-        statusCode: {
+        code: {
           type: "number",
         },
-        payload: {
-          type: "array",
-          items: {
-            Pizza,
-          },
+        message: {
+          type: "string",
         },
         error: {
           type: "boolean",
