@@ -6,6 +6,8 @@ import {
   typesRoutes,
   categoryRoutes,
 } from "./routes";
+import drinkRoutes from "./routes/drinkRoutes";
+import pizzaRoutes from "./routes/pizzaRoutes";
 
 export default class Server {
   private static _instance: Server | null;
@@ -36,6 +38,13 @@ export default class Server {
     });
     this.server.register(categoryRoutes, {
       prefix: "/.netlify/functions/server/category",
+    });
+
+    this.server.register(pizzaRoutes, {
+      prefix: "/.netlify/functions/server/pizza",
+    });
+    this.server.register(drinkRoutes, {
+      prefix: "/.netlify/functions/server/drink",
     });
   }
 

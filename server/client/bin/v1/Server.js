@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cors_1 = __importDefault(require("@fastify/cors"));
 const fastify_1 = __importDefault(require("fastify"));
 const routes_1 = require("./routes");
+const drinkRoutes_1 = __importDefault(require("./routes/drinkRoutes"));
+const pizzaRoutes_1 = __importDefault(require("./routes/pizzaRoutes"));
 class Server {
     static _instance;
     constructor() {
@@ -30,6 +32,12 @@ class Server {
         });
         this.server.register(routes_1.categoryRoutes, {
             prefix: "/.netlify/functions/server/category",
+        });
+        this.server.register(pizzaRoutes_1.default, {
+            prefix: "/.netlify/functions/server/pizza",
+        });
+        this.server.register(drinkRoutes_1.default, {
+            prefix: "/.netlify/functions/server/drink",
         });
     }
     static get Instance() {

@@ -12,7 +12,6 @@ class PizzaController {
     rep: FastifyReply
   ) {
     const { filters, scale } = req.query;
-    console.log(filters);
 
     if (filters === "like") {
       const response = await Product.getByMostLiked();

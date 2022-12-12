@@ -7,7 +7,6 @@ const Product_1 = __importDefault(require("../models/Product"));
 class PizzaController {
     async index(req, rep) {
         const { filters, scale } = req.query;
-        console.log(filters);
         if (filters === "like") {
             const response = await Product_1.default.getByMostLiked();
             return response;
