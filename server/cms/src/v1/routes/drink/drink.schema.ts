@@ -35,7 +35,7 @@ const Drink = {
 const createDrinkOptions = {
   body: {
     type: "object",
-    required: ["price", "volume", "saleOffValue", "type", "picture", "name"],
+    required: ["price", "volume", "saleOffValue", "type", "picture", "name", "categoria",],
     properties: {
       picture: { type: "object" },
       price: {
