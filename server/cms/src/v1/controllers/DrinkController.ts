@@ -212,9 +212,9 @@ class DrinkController {
 
       await Picture.update({ id: pictureId as number, picture_link: url });
     }
-    
+
     let categoriaId = drink?.product?.category_id;
-    
+
     if (categoria) {
       const checkCategoria = await Categoria.getByName(categoria.value);
 
@@ -269,7 +269,7 @@ class DrinkController {
     }
 
     if (saleOffValue) {
-      if (drink?.product?.sale_off_products) {
+      if (drink?.product?.sale_off_products[0] != undefined) {
         await Promocao.update({
           id: drink?.product?.sale_off_products[0].id as number,
           off_value: saleOffValue.value,

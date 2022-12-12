@@ -200,7 +200,7 @@ class DrinkController {
             });
         }
         if (saleOffValue) {
-            if (drink?.product?.sale_off_products) {
+            if (drink?.product?.sale_off_products[0] != undefined) {
                 await Promocao_1.default.update({
                     id: drink?.product?.sale_off_products[0].id,
                     off_value: saleOffValue.value,
