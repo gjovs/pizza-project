@@ -113,7 +113,7 @@ class PizzaController {
     const productId = await Product.save({
       id: -1,
       created_by: userId,
-      likes: 0,
+      likes: 1,
       name,
       price: price.value,
       status: true,
