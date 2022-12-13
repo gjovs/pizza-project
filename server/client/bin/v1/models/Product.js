@@ -6,8 +6,8 @@ class Product {
         try {
             const response = await database_1.db.tbl_product.findUnique({
                 where: {
-                    id
-                }
+                    id,
+                },
             });
             return response;
         }
@@ -101,9 +101,9 @@ class Product {
                                     select: {
                                         name: true,
                                         id: true,
-                                    }
-                                }
-                            }
+                                    },
+                                },
+                            },
                         },
                         tbl_pizza_stuffing: true,
                         tbl_pizza_type: true,
@@ -111,9 +111,9 @@ class Product {
                 },
                 tbl_product_pictures: {
                     include: {
-                        tbl_picture: true
-                    }
-                }
+                        tbl_picture: true,
+                    },
+                },
             },
             where: {
                 status: true,
@@ -148,11 +148,16 @@ class Product {
                             include: {
                                 tbl_pizza_ingredient: {
                                     include: {
-                                        tbl_ingredient: true
-                                    }
+                                        tbl_ingredient: true,
+                                    },
                                 },
                                 tbl_pizza_stuffing: true,
                                 tbl_pizza_type: true,
+                            },
+                        },
+                        tbl_product_pictures: {
+                            include: {
+                                tbl_picture: true,
                             },
                         },
                     },
@@ -194,8 +199,8 @@ class Product {
                 status: true,
             },
             orderBy: {
-                price: "asc"
-            }
+                price: "asc",
+            },
         });
         const sanitzedResponse = [];
         response.forEach((item) => {
@@ -232,8 +237,8 @@ class Product {
                 status: true,
             },
             orderBy: {
-                price: "desc"
-            }
+                price: "desc",
+            },
         });
         const sanitzedResponse = [];
         response.forEach((item) => {

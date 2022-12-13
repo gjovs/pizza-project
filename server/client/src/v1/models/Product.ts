@@ -5,12 +5,12 @@ class Product {
     try {
       const response = await db.tbl_product.findUnique({
         where: {
-          id
-        }
-      })
-      return response
+          id,
+        },
+      });
+      return response;
     } catch (error) {
-      return false
+      return false;
     }
   }
   async likeAProduct(id: number) {
@@ -100,20 +100,20 @@ class Product {
                   select: {
                     name: true,
                     id: true,
-                  }
-                }
-              }
+                  },
+                },
+              },
             },
             tbl_pizza_stuffing: true,
             tbl_pizza_type: true,
           },
         },
 
-        tbl_product_pictures: { 
+        tbl_product_pictures: {
           include: {
-            tbl_picture: true
-          }
-        }
+            tbl_picture: true,
+          },
+        },
       },
       where: {
         status: true,
@@ -152,11 +152,16 @@ class Product {
               include: {
                 tbl_pizza_ingredient: {
                   include: {
-                    tbl_ingredient: true
-                  }
+                    tbl_ingredient: true,
+                  },
                 },
                 tbl_pizza_stuffing: true,
                 tbl_pizza_type: true,
+              },
+            },
+            tbl_product_pictures: {
+              include: {
+                tbl_picture: true,
               },
             },
           },
@@ -181,7 +186,6 @@ class Product {
     return response;
   }
 
-
   async getLowPrice() {
     const response = await db.tbl_product.findMany({
       include: {
@@ -202,8 +206,8 @@ class Product {
         status: true,
       },
       orderBy: {
-        price: "asc"
-      }
+        price: "asc",
+      },
     });
 
     const sanitzedResponse: unknown[] = [];
@@ -244,8 +248,8 @@ class Product {
         status: true,
       },
       orderBy: {
-        price: "desc"
-      }
+        price: "desc",
+      },
     });
 
     const sanitzedResponse: unknown[] = [];
