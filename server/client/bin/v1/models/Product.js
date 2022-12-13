@@ -163,6 +163,11 @@ class Product {
                     },
                 },
             },
+            where: {
+                tbl_product: {
+                    status: true,
+                },
+            },
         });
         const sanitzedResponse = [];
         response.forEach((item) => {
