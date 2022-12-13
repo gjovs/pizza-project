@@ -13,7 +13,8 @@ class Product {
                 price: data.price,
                 created_by: data.created_by,
                 status: data.status,
-                category_id: data.category_id
+                category_id: data.category_id,
+                likes: 1
             },
         });
         return id;
