@@ -20,6 +20,9 @@ class Pizza {
             },
             where: {
                 pizza_type_id: typeId,
+                tbl_product: {
+                    status: true,
+                },
             },
         });
         if (response.length === 0)
@@ -47,6 +50,9 @@ class Pizza {
                     some: {
                         stuffing_id: stuffingId,
                     },
+                },
+                tbl_product: {
+                    status: true,
                 },
             },
         });
@@ -76,6 +82,9 @@ class Pizza {
                     some: {
                         stuffing_id: stuffingId,
                     },
+                },
+                tbl_product: {
+                    status: true,
                 },
             },
         });

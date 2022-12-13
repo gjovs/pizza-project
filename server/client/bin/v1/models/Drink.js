@@ -16,7 +16,12 @@ class Drink {
                     },
                 },
             },
-            where: { drink_type_id: typeId },
+            where: {
+                drink_type_id: typeId,
+                tbl_product: {
+                    status: true,
+                },
+            },
         });
         if (response.length === 0)
             return false;
