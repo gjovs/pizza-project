@@ -150,7 +150,11 @@ class Product {
             },
             tbl_pizza: {
               include: {
-                tbl_pizza_ingredient: true,
+                tbl_pizza_ingredient: {
+                  include: {
+                    tbl_ingredient: true
+                  }
+                },
                 tbl_pizza_stuffing: true,
                 tbl_pizza_type: true,
               },
